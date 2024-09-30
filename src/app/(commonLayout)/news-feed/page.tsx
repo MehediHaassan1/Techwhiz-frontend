@@ -1,7 +1,7 @@
 const NewsFeedPage = () => {
     return (
         <div>
-            <h1>This is NewsFeedPage component.</h1>
+            <h1>Hello</h1>
         </div>
     );
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Navbar as NextUINavbar,
     NavbarContent,
@@ -18,9 +20,11 @@ import { ThemeSwitch } from "@/src/components/theme-switch";
 import { HeartFilledIcon, Logo } from "@/src/components/icons";
 import NavbarDropdown from "./NavbarDropdown";
 import { LogIn } from "lucide-react";
+import { useUser } from "../context/user.provider";
+import Loading from "./Loading";
 
 export const Navbar = () => {
-    const user = false;
+    const { user } = useUser();
     return (
         <NextUINavbar maxWidth="xl" position="sticky">
             <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
