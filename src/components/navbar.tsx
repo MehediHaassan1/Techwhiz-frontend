@@ -17,6 +17,7 @@ import { siteConfig } from "@/src/config/site";
 import { ThemeSwitch } from "@/src/components/theme-switch";
 import { HeartFilledIcon, Logo } from "@/src/components/icons";
 import NavbarDropdown from "./NavbarDropdown";
+import { LogIn } from "lucide-react";
 
 export const Navbar = () => {
     const user = false;
@@ -32,7 +33,7 @@ export const Navbar = () => {
                         <p className="font-bold text-inherit">TechWhiz</p>
                     </NextLink>
                 </NavbarBrand>
-                <ul className="hidden lg:flex gap-4 justify-start ml-2">
+                <ul className="hidden md:flex gap-4 justify-start ml-2">
                     {siteConfig.navItems.map((item) => (
                         <NavbarItem key={item.href}>
                             <NextLink
@@ -65,9 +66,7 @@ export const Navbar = () => {
                             as={Link}
                             className="text-sm font-normal text-default-600 bg-default-100 rounded"
                             href={siteConfig.links.login}
-                            startContent={
-                                <HeartFilledIcon className="text-danger" />
-                            }
+                            endContent={<LogIn />}
                             variant="flat"
                         >
                             Login

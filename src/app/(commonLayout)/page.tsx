@@ -1,64 +1,26 @@
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-
-import { siteConfig } from "@/src/config/site";
-import { Button } from "@nextui-org/button";
 import { subtitle, title } from "@/src/components/primitives";
-import { GithubIcon } from "@/src/components/icons";
+import HomeBtn from "./@components/HomeBtn";
 
 export default function Home() {
     return (
-        <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-            <div className="inline-block max-w-xl text-center justify-center">
-                <span className={title()}>Make&nbsp;</span>
-                <span className={title({ color: "violet" })}>
-                    beautiful&nbsp;
+        <section className="flex flex-col items-end justify-center gap-4 py-8 md:py-10 pr-6 md:pr-8 lg:pr-16 bg-[url('https://i.ibb.co/RP3nxCV/hero-image.png')] bg-cover bg-left min-h-[calc(100vh-64px)]">
+            <div className="inline-block max-w-xl text-right  justify-center">
+                <span className={title()}>
+                    In tech, staying informed today shapes&nbsp;
                 </span>
                 <br />
-                <span className={title()}>
-                    websites regardless of your design experience.
+                <span className={title({ color: "violet" })}>
+                    the innovations&nbsp;
                 </span>
+                <br />
+                <span className={title()}>of tomorrow.</span>
                 <div className={subtitle({ class: "mt-4" })}>
-                    Beautiful, fast and modern React UI library.
+                    Keep up with the latest tech trends to stay ahead in an
+                    ever-evolving digital world.
                 </div>
             </div>
 
-            <div className="flex gap-3">
-                <Link
-                    isExternal
-                    className={buttonStyles({
-                        color: "primary",
-                        radius: "full",
-                        variant: "shadow",
-                    })}
-                    href={siteConfig.links.docs}
-                >
-                    Documentation
-                </Link>
-                <Link
-                    isExternal
-                    className={buttonStyles({
-                        variant: "bordered",
-                        radius: "full",
-                    })}
-                    href={siteConfig.links.github}
-                >
-                    <GithubIcon size={20} />
-                    GitHub
-                </Link>
-            </div>
-
-            <div className="mt-8">
-                <Snippet hideCopyButton hideSymbol variant="bordered">
-                    <span>
-                        Get started by editing{" "}
-                        <Code color="primary">app/page.tsx</Code>
-                    </span>
-                </Snippet>
-            </div>
-            <Button color="primary">Button</Button>
+            <HomeBtn />
         </section>
     );
 }
