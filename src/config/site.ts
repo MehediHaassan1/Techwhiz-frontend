@@ -1,0 +1,38 @@
+export type SiteConfig = typeof siteConfig;
+
+export const siteConfig = {
+  name: "TechWhiz",
+  description: "Make beautiful websites regardless of your design experience.",
+  navItems: [
+    {
+      label: "News Feed",
+      href: "/news-feed",
+    },
+    {
+      label: "About Us",
+      href: "/about-us",
+    },
+    {
+      label: "Contact Us",
+      href: "/contact-us",
+    },
+  ],
+  navMenuItems: [
+
+    {
+      label: "News Feed",
+      href: "/news-feed",
+    },
+    {
+      label: "About Us",
+      href: "/about-us",
+    },
+    {
+      label: "Contact Us",
+      href: "/contact-us",
+    },
+  ],
+  links: {
+    login: "/login",
+  },
+};
