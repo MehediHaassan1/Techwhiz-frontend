@@ -4,38 +4,44 @@ import { ReactNode } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 interface formConfig {
-  defaultValues?: Record<string, any>;
-  resolver?: any;
+    defaultValues?: Record<string, any>;
+    resolver?: any;
 }
 
 interface IProps extends formConfig {
-  children: ReactNode;
-  onSubmit: SubmitHandler<any>;
+    children: ReactNode;
+    onSubmit: SubmitHandler<any>;
 }
 
 export default function TWForm({
-  children,
-  onSubmit,
-  defaultValues,
-  resolver,
+    children,
+    onSubmit,
+    defaultValues,
+    resolver,
 }: IProps) {
-  const formConfig: formConfig = {};
+    const formConfig: formConfig = {};
 
-  if (!!defaultValues) {
-    formConfig["defaultValues"] = defaultValues;
-  }
+    if (!!defaultValues) {
+        formConfig["defaultValues"] = defaultValues;
+    }
 
-  if (!!resolver) {
-    formConfig["resolver"] = resolver;
-  }
+    if (!!resolver) {
+        formConfig["resolver"] = resolver;
+    }
 
-  const methods = useForm(formConfig);
+    const methods = useForm(formConfig);
 
-  const submitHandler = methods.handleSubmit;
+    const submitHandler = methods.handleSubmit((data) => {
+        onSubmit(data);
 
-  return (
-    <FormProvider {...methods}>
-      <form onSubmit={submitHandler(onSubmit)}>{children}</form>
-    </FormProvider>
-  );
+        methods.reset();
+    });
+
+    return (
+        <FormProvider {...methods}>
+            <form onSubmit={submitHandler} className="w-full">
+                {children}
+            </form>
+        </FormProvider>
+    );
 }

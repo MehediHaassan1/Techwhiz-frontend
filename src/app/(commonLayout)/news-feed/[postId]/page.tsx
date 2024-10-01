@@ -1,7 +1,6 @@
 import { getPost } from "@/src/services/PostService";
 import Author from "./Author";
 import PostData from "./PostData";
-import { IPost } from "@/src/types";
 
 interface IProps {
     params: {

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
     CalendarIcon,
     MessageSquare,
@@ -10,43 +9,79 @@ import {
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
-import { Textarea } from "@nextui-org/input";
 import moment from "moment";
 import { IComment, IPost } from "@/src/types";
+import TWForm from "@/src/components/form/TWForm";
+import TWTextarea from "@/src/components/form/TWTextArea";
+import { FieldValues, SubmitHandler } from "react-hook-form";
+import {
+    useDeleteComment,
+    useEditComment,
+    usePostComment,
+    useVotePost,
+} from "@/src/hooks/post.hook";
+import { useUser } from "@/src/context/user.provider";
+import { useState } from "react";
+import Loading from "@/src/components/Loading";
 
 export default function PostData({ post }: { post: IPost }) {
-    const [newComment, setNewComment] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { user, isLoading: userLoading } = useUser();
+    const {
+        mutate: handlePostComment,
+        isPending,
+        isSuccess,
+    } = usePostComment();
+    const { mutate: deleteComment } = useDeleteComment();
+    const { mutate: editComment } = useEditComment();
+    const { mutate: vote } = useVotePost();
 
-    // const handleLike = () => {
-    //     setLikes(likes + 1);
-    // };
+    // State to track which comment is being edited
+    const [editingCommentId, setEditingCommentId] = useState<string | null>(
+        null
+    );
+    const [content, setContent] = useState<string>("");
 
-    // const handleDislike = () => {
-    //     setDislikes(dislikes + 1);
-    // };
+    // Handle new comment submission
+    const handleSubmitComment: SubmitHandler<FieldValues> = (data) => {
+        const commentData = {
+            user: user?._id,
+            ...data,
+        };
+        const commentInfo = {
+            postId: post?._id,
+            commentData,
+        };
+        handlePostComment({
+            id: commentInfo.postId,
+            comment: commentInfo.commentData,
+        });
+    };
 
-    // const handleCommentSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     if (newComment.trim() === "") return;
+    // Handle Edit
+    const handleEdit = (commentId: string, currentContent: string) => {
+        setEditingCommentId(commentId);
+        setContent(currentContent);
+    };
 
-    //     setIsSubmitting(true);
+    // Handle save action
+    const handleSaveClick = (commentId: string) => {
+        editComment({ postId: post?._id, commentId, comment: { content } });
+        setEditingCommentId(null);
+    };
 
-    //     // Simulate API call
-    //     setTimeout(() => {
-    //         const newCommentObj = {
-    //             id: comments.length + 1,
-    //             author: "Current User",
-    //             content: newComment,
-    //             date: new Date().toISOString().split("T")[0],
-    //         };
-    //         setComments([...comments, newCommentObj]);
-    //         setNewComment("");
-    //         setIsSubmitting(false);
-    //     }, 1000);
-    // };
+    const handleCancel = () => {
+        setEditingCommentId(null);
+    };
 
-    console.log(post);
+    const handleDelete = (commentId: string) => {
+        deleteComment({ postId: post?._id, commentId });
+    };
+
+    const handleVotes = (postId: string, action: string) => {
+        vote({ postId, action });
+    };
+
+    if (userLoading) return <Loading />;
 
     return (
         <div className="max-w-3xl mx-auto p-4">
@@ -55,7 +90,7 @@ export default function PostData({ post }: { post: IPost }) {
                     <h1 className="text-3xl font-bold mb-2">{post?.title}</h1>
                     <div className="flex items-center space-x-4 mb-4">
                         <Avatar
-                            src="/placeholder.svg?height=40&width=40"
+                            src={post?.author?.profileImage}
                             alt="Author"
                             fallback
                         />
@@ -75,11 +110,19 @@ export default function PostData({ post }: { post: IPost }) {
                 <CardBody>
                     <p className="mb-4">{post?.content}</p>
                     <div className="flex items-center space-x-4">
-                        <Button variant="solid" size="sm">
+                        <Button
+                            variant="solid"
+                            size="sm"
+                            onClick={() => handleVotes(post?._id, "upvote")}
+                        >
                             <ThumbsUp className="mr-2 h-4 w-4" />
                             {post?.upVotes}
                         </Button>
-                        <Button variant="solid" size="sm">
+                        <Button
+                            variant="solid"
+                            size="sm"
+                            onClick={() => handleVotes(post?._id, "downvote")}
+                        >
                             <ThumbsDown className="mr-2 h-4 w-4" />
                             {post?.downVotes}
                         </Button>
@@ -114,20 +157,69 @@ export default function PostData({ post }: { post: IPost }) {
                                     </p>
                                 </div>
                             </div>
-                            <p>{comment?.content}</p>
+                            {editingCommentId === comment._id ? (
+                                <textarea
+                                    className="w-full border border-gray-300 rounded-md p-2"
+                                    value={content}
+                                    onChange={(e) => setContent(e.target.value)}
+                                />
+                            ) : (
+                                <p>{comment?.content}</p>
+                            )}
+                            {user?._id === comment?.user?._id && (
+                                <div className="flex items-center text-sm space-x-2 mt-3">
+                                    {editingCommentId === comment._id ? (
+                                        <>
+                                            <Button
+                                                className="rounded"
+                                                onClick={() =>
+                                                    handleSaveClick(comment._id)
+                                                }
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                className="rounded"
+                                                onClick={() => handleCancel()}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <Button
+                                            className="rounded"
+                                            onClick={() =>
+                                                handleEdit(
+                                                    comment._id,
+                                                    comment?.content
+                                                )
+                                            }
+                                        >
+                                            Edit
+                                        </Button>
+                                    )}
+                                    <Button
+                                        className="rounded"
+                                        onClick={() =>
+                                            handleDelete(comment?._id)
+                                        }
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </CardBody>
-                <CardFooter>
-                    <form className="w-full">
-                        <Textarea
-                            placeholder="Write a comment..."
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            className="mb-2"
-                        />
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? (
+                <CardFooter className="w-full">
+                    <TWForm onSubmit={handleSubmitComment}>
+                        <TWTextarea label="" name="content" />
+                        <Button
+                            type="submit"
+                            className="mt-3 rounded"
+                            isDisabled={isPending && !isSuccess}
+                        >
+                            {isPending ? (
                                 <>
                                     <MessageSquare className="mr-2 h-4 w-4 animate-spin" />
                                     Posting...
@@ -139,7 +231,7 @@ export default function PostData({ post }: { post: IPost }) {
                                 </>
                             )}
                         </Button>
-                    </form>
+                    </TWForm>
                 </CardFooter>
             </Card>
         </div>
