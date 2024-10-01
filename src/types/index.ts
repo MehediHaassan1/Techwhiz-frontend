@@ -33,4 +33,33 @@ export interface IUser {
   createdAt: string
   updatedAt: string
   __v: number
+  passwordChangedAt: string
+}
+
+export interface IPost {
+  _id: string
+  title: string
+  content: string
+  author: IUser
+  category: string
+  tags: string[]
+  isPremium: boolean
+  upVotes: number
+  downVotes: number
+  images: string[]
+  status: string
+  pdfVersion: string
+  isDeleted: boolean
+  comments: IComment[]
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+export interface IComment {
+  user: IUser
+  content: string
+  _id: string
+  createdAt: string
+  updatedAt: string
 }

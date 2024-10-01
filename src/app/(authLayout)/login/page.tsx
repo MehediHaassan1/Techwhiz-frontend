@@ -17,7 +17,12 @@ import Loading from "@/src/components/Loading";
 import { useUser } from "@/src/context/user.provider";
 
 export default function LoginPage() {
-    const { mutate: handleUserLogin, isPending, isSuccess } = useUserLogin();
+    const {
+        mutate: handleUserLogin,
+        isPending,
+        isSuccess,
+        data,
+    } = useUserLogin();
     const router = useRouter();
     const { setIsLoading } = useUser();
     const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +34,8 @@ export default function LoginPage() {
         handleUserLogin(data);
         setIsLoading(true);
     };
+
+    console.log(data);
 
     useEffect(() => {
         if (!isPending && isSuccess) {

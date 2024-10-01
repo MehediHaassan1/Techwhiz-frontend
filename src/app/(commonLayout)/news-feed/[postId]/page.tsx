@@ -1,9 +1,20 @@
-const PostDetails = ({ params }) => {
+import { getPost } from "@/src/services/PostService";
+import Author from "./Author";
+import PostData from "./PostData";
+import { IPost } from "@/src/types";
+
+interface IProps {
+    params: {
+        postId: string;
+    };
+}
+
+export default async function PostDetails({ params: { postId } }: IProps) {
+    const { data } = await getPost(postId);
     return (
-        <div>
-            <h1>This is PostDetails component ${params.postId}.</h1>
+        <div className="max-w-3xl mx-auto p-4">
+            <PostData post={data} />
+            <Author />
         </div>
     );
-};
-
-export default PostDetails;
+}

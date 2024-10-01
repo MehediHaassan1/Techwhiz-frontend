@@ -11,7 +11,6 @@ export const userLogin = async (loginData: FieldValues) => {
       cookies().set("accessToken", data?.data?.accessToken);
       cookies().set("refreshToken", data?.data?.refreshToken);
     }
-
     return data;
   } catch (error: any) {
     throw new Error(error);
