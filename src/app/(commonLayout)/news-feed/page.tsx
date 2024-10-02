@@ -8,7 +8,6 @@ const NewsFeedPage = async () => {
     const posts = data?.data as IPost[];
 
     const popularPosts = posts?.filter((post) => post.upVotes > 200);
-    console.log(popularPosts);
 
     return (
         <div className="container mx-auto  grid md:grid-cols-3">

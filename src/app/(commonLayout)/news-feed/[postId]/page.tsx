@@ -1,6 +1,7 @@
-import { getPost } from "@/src/services/PostService";
+import { getPost, getPosts } from "@/src/services/PostService";
 import Author from "./Author";
 import PostData from "./PostData";
+import { IPost } from "@/src/types";
 
 interface IProps {
     params: {
@@ -10,10 +11,15 @@ interface IProps {
 
 export default async function PostDetails({ params: { postId } }: IProps) {
     const { data } = await getPost(postId);
+    const { data: posts } = await getPosts();
+    const authorPosts = posts
+        ?.filter((post:IPost) => post?.author?._id === data?.author?._id)
+        .slice(0, 2);
+    console.log(authorPosts);
     return (
         <div className="max-w-3xl mx-auto p-4">
             <PostData post={data} />
-            <Author />
+            <Author author={data?.author} authorPosts={authorPosts} />
         </div>
     );
 }

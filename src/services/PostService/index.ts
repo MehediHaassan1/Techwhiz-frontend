@@ -84,3 +84,14 @@ export const votePost = async (postId: string, action: string) => {
     throw new Error(error)
   }
 }
+
+export const getMyPosts = async () => {
+  try{
+    const {data} = await axiosInstance.get('/posts/my-posts')
+    if(data?.success){
+      return data;
+    }
+  } catch (error: any) {
+    throw new Error(error)
+  }
+}

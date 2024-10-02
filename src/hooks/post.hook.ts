@@ -1,6 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { FieldValues } from "react-hook-form";
-import { createComment, deleteComment, editComment, votePost } from "../services/PostService";
+import { createComment, deleteComment, editComment, getMyPosts, votePost } from "../services/PostService";
 import { toast } from "sonner";
 
 
@@ -51,4 +51,12 @@ export const useVotePost = () => {
         toast.error('Failed to cast vote!');
       }
     })
+}
+
+
+export const useGetMyPosts = () => {
+  return useQuery({
+    queryKey: ["my-posts"],
+    queryFn: async () => await getMyPosts(),
+  })
 }

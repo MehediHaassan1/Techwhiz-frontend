@@ -1,121 +1,126 @@
 "use client";
 
-import { useState } from "react";
-import { Star } from "lucide-react";
-import Link from "next/link";
 import { Avatar } from "@nextui-org/avatar";
 import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { IPost, IUser } from "@/src/types";
+import { useUser } from "@/src/context/user.provider";
+import { useToggleFollow } from "@/src/hooks/user.hook";
+import { Badge } from "@nextui-org/badge";
+import { CheckIcon } from "lucide-react";
+import { Image } from "@nextui-org/image";
 
-export default function Author() {
-    const [isFollowing, setIsFollowing] = useState(false);
-    const [followerCount, setFollowerCount] = useState(25000);
+export default function Author({
+    author,
+    authorPosts,
+}: {
+    author: IUser;
+    authorPosts: IPost[];
+}) {
+    const { user } = useUser();
+    const { mutate: toggleFollow } = useToggleFollow();
 
-    const handleFollow = () => {
-        if (isFollowing) {
-            setFollowerCount((prevCount) => prevCount - 1);
-        } else {
-            setFollowerCount((prevCount) => prevCount + 1);
-        }
-        setIsFollowing(!isFollowing);
+    const handleToggleFollow = () => {
+        toggleFollow(author._id);
     };
 
+    console.log({ userId: user?._id, authorId: author?._id });
+
     return (
-        <div className="max-w-2xl mx-auto p-4">
+        <div className="max-w-3xl mx-auto p-4">
             <div className="flex items-start space-x-4 mb-6">
-                <Avatar
-                    src="/placeholder.svg?height=40&width=40"
-                    alt="Author"
-                    fallback
-                />
+                <div>
+                    {author?.isVerified ? (
+                        <Badge
+                            isOneChar
+                            content={<CheckIcon />}
+                            color="success"
+                            placement="bottom-right"
+                            shape="circle"
+                        >
+                            <Avatar
+                                isBordered
+                                radius="full"
+                                src={user?.profileImage}
+                                className="border-4 border-white z-10"
+                            />
+                        </Badge>
+                    ) : (
+                        <Badge
+                            isOneChar
+                            content={<CheckIcon />}
+                            color="default"
+                            placement="bottom-right"
+                            shape="circle"
+                        >
+                            <Avatar
+                                isBordered
+                                radius="full"
+                                src={user?.profileImage}
+                                className="border-4 border-white z-10"
+                            />
+                        </Badge>
+                    )}
+                </div>
                 <div className="flex-grow">
                     <h1 className="text-2xl font-bold flex items-center">
-                        Written by Melody Koh <span className="ml-2">😉</span>
+                        Written by {author?.name}{" "}
+                        <span className="ml-2">😉</span>
                     </h1>
                     <p className="text-muted-foreground">
-                        {followerCount.toLocaleString()} Followers · Writer for
-                        Prototypr
+                        {author?.followers?.length} Followers
                     </p>
-                    <p className="mt-2">
-                        Senior product designer{" "}
-                        <Star className="inline-block w-4 h-4 text-yellow-400" />{" "}
-                        I write provocative things because I am a provocative
-                        person I
-                    </p>
-                    <p>
-                        Follow on LinkedIn:{" "}
-                        <Link
-                            href="https://shorturl.at/fwyQ0"
-                            className="text-blue-500 hover:underline"
-                        >
-                            https://shorturl.at/fwyQ0
-                        </Link>
-                    </p>
+                    <p className="mt-2">{author?.bio}</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                    <Button
-                        onClick={handleFollow}
-                        variant={isFollowing ? "light" : "flat"}
-                        className="rounded"
-                    >
-                        {isFollowing ? "Following" : "Follow"}
-                    </Button>
+                    {author?._id === user?._id ? (
+                        <div></div>
+                    ) : author?.followers?.includes(user?._id) ? (
+                        <Button
+                            onClick={handleToggleFollow}
+                            className="rounded"
+                        >
+                            Unfollow
+                        </Button>
+                    ) : (
+                        <Button
+                            onClick={handleToggleFollow}
+                            className="rounded"
+                        >
+                            Follow
+                        </Button>
+                    )}
                 </div>
             </div>
 
             <h2 className="text-xl font-bold mb-4">
-                More from Melody Koh 😉 and Prototypr
+                More from {author?.name} 😉
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
-                <Card>
-                    <CardHeader>
-                        <h1 className="text-lg">
-                            I design and develop experiences that make people's
-                            lives simple.
-                        </h1>
-                    </CardHeader>
-                    <CardBody>
-                        <img
-                            src="/placeholder.svg?height=200&width=400"
-                            alt="Laptop showing design"
-                            className="w-full h-40 object-cover rounded-md"
-                        />
-                        <div className="flex items-center mt-2">
-                            <Avatar
-                                src="/placeholder.svg?height=40&width=40"
-                                alt="Author"
-                                fallback
+                {authorPosts?.map((post) => (
+                    <Card>
+                        <CardHeader>
+                            <h1 className="text-lg">{post?.title}</h1>
+                        </CardHeader>
+                        <CardBody>
+                            <Image
+                                src={post?.images[0]}
+                                alt={post?.title}
+                                className="w-full h-40 object-cover rounded-md"
+                                width="100"
+                                height="100"
                             />
-                            <p className="text-sm">
-                                Melody Koh 😉 in Prototypr
-                            </p>
-                        </div>
-                    </CardBody>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <h1 className="text-lg">
-                            Exploring new design tools and techniques
-                        </h1>
-                    </CardHeader>
-                    <CardBody>
-                        <img
-                            src="/placeholder.svg?height=200&width=400"
-                            alt="Hands typing on laptop"
-                            className="w-full h-40 object-cover rounded-md"
-                        />
-                        <div className="flex items-center mt-2">
-                            <Avatar
-                                src="/placeholder.svg?height=40&width=40"
-                                alt="Author"
-                                fallback
-                            />
-                            <p className="text-sm">
-                                Melody Koh 😉 in Prototypr
-                            </p>
-                        </div>
-                    </CardBody>
-                </Card>
+                            <div className="flex items-center mt-2 gap-2">
+                                <Avatar
+                                    src={author?.profileImage}
+                                    alt={author?.name}
+                                    fallback
+                                />
+                                <p className="text-sm">{author?.name} 😉</p>
+                            </div>
+                        </CardBody>
+                    </Card>
+                ))}
             </div>
         </div>
     );

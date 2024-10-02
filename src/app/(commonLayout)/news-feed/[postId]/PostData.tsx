@@ -91,7 +91,7 @@ export default function PostData({ post }: { post: IPost }) {
                     <div className="flex items-center space-x-4 mb-4">
                         <Avatar
                             src={post?.author?.profileImage}
-                            alt="Author"
+                            alt={post?.author?.name}
                             fallback
                         />
                         <div>
@@ -142,8 +142,8 @@ export default function PostData({ post }: { post: IPost }) {
                         >
                             <div className="flex items-center space-x-2 mb-2">
                                 <Avatar
-                                    src="/placeholder.svg?height=40&width=40"
-                                    alt="Author"
+                                    src={comment?.user?.profileImage}
+                                    alt={comment?.user?.name}
                                     fallback
                                 />
                                 <div>
