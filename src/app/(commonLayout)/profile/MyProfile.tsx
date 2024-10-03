@@ -9,6 +9,7 @@ import {
     Image,
     Divider,
     Badge,
+    useDisclosure,
 } from "@nextui-org/react";
 import { MapPinIcon, PhoneIcon, InfoIcon, CheckIcon } from "lucide-react";
 import { useUser } from "@/src/context/user.provider";
@@ -17,6 +18,7 @@ import TWModal from "@/src/components/modal/TWModal";
 
 export default function MyProfile() {
     const { user, isLoading: userLoading } = useUser();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     if (userLoading) return <Loading />;
     return (
@@ -84,68 +86,83 @@ export default function MyProfile() {
             <div className="flex gap-4 mb-8">
                 <div className="text-center">
                     {user!.followers?.length > 0 ? (
-                        <TWModal
-                            btnText={`${user?.followers.length} Followers`}
-                            title="Followers"
-                        >
-                            {user?.followers?.map((user) => (
-                                <div key={user?._id}>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <Avatar
-                                                size="sm"
-                                                src={user?.profileImage}
-                                                className="rounded-full"
-                                            />
-                                            <span>{user?.name}</span>
+                        <>
+                            <Button onPress={onOpen}>
+                                {user?.followers.length} Followers
+                            </Button>
+                            <TWModal
+                                scrollBehavior="inside"
+                                isOpen={isOpen}
+                                onOpenChange={onOpenChange}
+                                title="Followers"
+                            >
+                                {user?.followers?.map((user) => (
+                                    <div key={user?._id}>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <Avatar
+                                                    size="sm"
+                                                    src={user?.profileImage}
+                                                    className="rounded-full"
+                                                />
+                                                <span>{user?.name}</span>
+                                            </div>
+                                            <div>
+                                                <Button
+                                                    size="sm"
+                                                    className="rounded"
+                                                >
+                                                    Follow
+                                                </Button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <Button
-                                                size="sm"
-                                                className="rounded"
-                                            >
-                                                Follow
-                                            </Button>
-                                        </div>
+                                        <Divider className="mt-2" />
                                     </div>
-                                    <Divider className="mt-2" />
-                                </div>
-                            ))}
-                        </TWModal>
+                                ))}
+                            </TWModal>
+                        </>
                     ) : (
                         <Button className="rounded">0 Followers</Button>
                     )}
                 </div>
                 <div className="text-center">
                     {user!.following?.length > 0 ? (
-                        <TWModal
-                            btnText={`${user?.following.length} Following`}
-                            title="Following"
-                        >
-                            {user?.followers?.map((user) => (
-                                <div key={user?._id}>
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            <Avatar
-                                                size="sm"
-                                                src={user?.profileImage}
-                                                className="rounded-full"
-                                            />
-                                            <span>{user?.name}</span>
+                        <>
+                            <Button onPress={onOpen}>
+                                {user?.following.length} Followers
+                            </Button>
+
+                            <TWModal
+                                scrollBehavior="inside"
+                                isOpen={isOpen}
+                                onOpenChange={onOpenChange}
+                                title="Following"
+                            >
+                                {user?.following?.map((user) => (
+                                    <div key={user?._id}>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <Avatar
+                                                    size="sm"
+                                                    src={user?.profileImage}
+                                                    className="rounded-full"
+                                                />
+                                                <span>{user?.name}</span>
+                                            </div>
+                                            <div>
+                                                <Button
+                                                    size="sm"
+                                                    className="rounded"
+                                                >
+                                                    Unfollow
+                                                </Button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <Button
-                                                size="sm"
-                                                className="rounded"
-                                            >
-                                                Unfollow
-                                            </Button>
-                                        </div>
+                                        <Divider className="mt-2" />
                                     </div>
-                                    <Divider className="mt-2" />
-                                </div>
-                            ))}
-                        </TWModal>
+                                ))}
+                            </TWModal>
+                        </>
                     ) : (
                         <Button className="rounded" variant="flat">
                             0 Following

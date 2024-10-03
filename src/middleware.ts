@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
 
 const AuthRoutes = ["/login", "/register"];
-const CommonProtectedRoutes = ["/profile"];
+const CommonProtectedRoutes = ["/profile", "/settings"];
 
 
 export async function middleware(request: NextRequest) {
@@ -26,11 +26,11 @@ export async function middleware(request: NextRequest) {
 
   const { role }: any = jwtDecode(accessToken);
 
-  if (role === 'admin' && pathname === '/dashboard-admin') {
+  if (role === 'admin' && pathname.startsWith('/dashboard-admin')) {
     return NextResponse.next();
   }
 
-  if (role === 'user' && pathname === '/dashboard-user') {
+  if (role === 'user' && pathname.startsWith('/dashboard-user')) {
     return NextResponse.next();
   }
 

@@ -22,11 +22,6 @@ export const getPost = async (id: string) => {
   };
 
   const res = await fetch(`${envConfig.baseApi}/posts/${id}`, fetchOptions);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
   return res.json();
 }
 
@@ -86,9 +81,9 @@ export const votePost = async (postId: string, action: string) => {
 }
 
 export const getMyPosts = async () => {
-  try{
-    const {data} = await axiosInstance.get('/posts/my-posts')
-    if(data?.success){
+  try {
+    const { data } = await axiosInstance.get('/posts/my-posts')
+    if (data?.success) {
       return data;
     }
   } catch (error: any) {

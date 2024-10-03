@@ -10,31 +10,39 @@ import {
 import { ReactNode } from "react";
 
 interface IProps {
-    btnText: string;
     title: string;
     children: ReactNode;
-    btnVariant?:
-        | "ghost"
-        | "flat"
-        | "solid"
-        | "bordered"
-        | "light"
-        | "faded"
-        | "shadow"
-        | undefined;
+    size?:
+        | "xs"
+        | "sm"
+        | "md"
+        | "lg"
+        | "xl"
+        | "2xl"
+        | "3xl"
+        | "4xl"
+        | "5xl"
+        | "full";
+    isOpen: boolean;
+    onOpenChange: () => void;
+    scrollBehavior?: "inside" | "outside";
 }
 
-const TWModal = ({ btnText, btnVariant = "flat", title, children }: IProps) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const TWModal = ({
+    title,
+    children,
+    size = "md",
+    isOpen,
+    onOpenChange,
+    scrollBehavior
+}: IProps) => {
     return (
         <>
-            <Button className="rounded" variant={btnVariant} onPress={onOpen}>
-                {btnText}
-            </Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
-                scrollBehavior="inside"
+                scrollBehavior={scrollBehavior}
+                size={size}
             >
                 <ModalContent className="pb-2">
                     {(onClose) => (

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+
+
 const registerSchema = z.object({
   name: z
     .string()
@@ -15,6 +17,7 @@ const registerSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters long" })
     .max(20, { message: "Password must be at most 20 characters long" }),
+  birthday: z.date({ required_error: "Date of birth is required" }).transform((date) => date)
 });
 
 export default registerSchema;

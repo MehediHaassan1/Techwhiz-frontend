@@ -33,7 +33,6 @@ export default function TWForm({
 
     const submitHandler = methods.handleSubmit((data) => {
         onSubmit(data);
-
         methods.reset();
     });
 

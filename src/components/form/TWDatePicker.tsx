@@ -1,15 +1,26 @@
 import { DatePicker } from "@nextui-org/date-picker";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { IInput } from "@/src/types";
 
+interface IProps {
+    variant?: "underlined" | "faded" | "flat" | "bordered";
+    size?: "sm" | "md" | "lg";
+    radius: "none" | "sm" | "md" | "lg" | "full";
+}
+
 interface IProps extends IInput {}
 
-export default function TWDatePicker({
+const TWDatePicker = ({
     label,
     name,
     variant = "bordered",
-}: IProps) {
+    radius,
+}: IProps) => {
+    const {
+        formState: { errors },
+    } = useFormContext();
+
     return (
         <Controller
             name={name}
@@ -17,10 +28,18 @@ export default function TWDatePicker({
                 <DatePicker
                     className="min-w-full sm:min-w-[225px]"
                     label={label}
-                    variant={variant}
                     {...fields}
+                    errorMessage={
+                        errors[name] ? (errors[name].message as string) : ""
+                    }
+                    isInvalid={!!errors[name]}
+                    radius={radius}
+                    variant={variant}
+                    showMonthAndYearPickers
                 />
             )}
         />
     );
-}
+};
+
+export default TWDatePicker;

@@ -4,6 +4,17 @@ import axiosInstance from "@/src/lib/AxiosInstance";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 
+export const userRegister = async (registerData: FieldValues) => {
+  try {
+    const { data } = await axiosInstance.post('/auth/register', registerData);
+    if (data.success) {
+      return data;
+    }
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
 export const userLogin = async (loginData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post('/auth/login', loginData);
