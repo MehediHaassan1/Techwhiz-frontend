@@ -35,15 +35,15 @@ const Sidebar = () => {
 
     return (
         <div className="h-full relative">
-            <div className="bg-[#F7F7F7] w-full text-gray-800 flex justify-between md:hidden">
-                <div className="block p-4 font-bold">
-                    <Logo /> TechWhiz
+            <div className="bg-black w-full text-gray-300 flex justify-between z-50 md:hidden">
+                <div className="p-4 font-bold flex items-center gap-2">
+                    <Logo /> <span className="text-2xl">TechWhiz</span>
                 </div>
                 <button
                     className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-200"
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 >
-                    <Menu className="h-5 w-5" />
+                    <Menu className="size-8" />
                 </button>
             </div>
 

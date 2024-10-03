@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@nextui-org/button";
 import {
     Modal,
@@ -23,21 +25,25 @@ interface IProps {
         | "4xl"
         | "5xl"
         | "full";
-    isOpen: boolean;
-    onOpenChange: () => void;
     scrollBehavior?: "inside" | "outside";
+    btnIcon?: ReactNode;
+    btnText: string;
 }
 
 const TWModal = ({
     title,
     children,
     size = "md",
-    isOpen,
-    onOpenChange,
-    scrollBehavior
+    scrollBehavior,
+    btnIcon,
+    btnText,
 }: IProps) => {
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <>
+            <Button onPress={onOpen} startContent={btnIcon} className="rounded">
+                {btnText}
+            </Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -45,7 +51,7 @@ const TWModal = ({
                 size={size}
             >
                 <ModalContent className="pb-2">
-                    {(onClose) => (
+                    {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
                                 {title}

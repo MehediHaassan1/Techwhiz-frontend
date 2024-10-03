@@ -9,6 +9,7 @@ import { useToggleFollow } from "@/src/hooks/user.hook";
 import { Badge } from "@nextui-org/badge";
 import { CheckIcon } from "lucide-react";
 import { Image } from "@nextui-org/image";
+import Link from "next/link";
 
 export default function Author({
     author,
@@ -23,8 +24,6 @@ export default function Author({
     const handleToggleFollow = () => {
         toggleFollow(author._id);
     };
-
-    console.log({ userId: user?._id, authorId: author?._id });
 
     return (
         <div className="max-w-3xl mx-auto p-4">
@@ -73,7 +72,16 @@ export default function Author({
                     <p className="mt-2">{author?.bio}</p>
                 </div>
                 <div className="flex flex-col space-y-2">
-                    {author?._id === user?._id ? (
+                    {!user ? (
+                        <Button
+                            as={Link}
+                            passHref
+                            href="/login"
+                            className="rounded"
+                        >
+                            Follow
+                        </Button>
+                    ) : author?._id === user?._id ? (
                         <div></div>
                     ) : author?.followers?.includes(user?._id) ? (
                         <Button
@@ -98,7 +106,7 @@ export default function Author({
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
                 {authorPosts?.map((post) => (
-                    <Card>
+                    <Card as={Link} href={`/news-feed/${post?._id}`}>
                         <CardHeader>
                             <h1 className="text-lg">{post?.title}</h1>
                         </CardHeader>
@@ -110,7 +118,7 @@ export default function Author({
                                 width="100"
                                 height="100"
                             />
-                            <div className="flex items-center mt-2 gap-2">
+                            <div className="absolute bottom-4 flex items-center mt-2 gap-2">
                                 <Avatar
                                     src={author?.profileImage}
                                     alt={author?.name}

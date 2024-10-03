@@ -81,159 +81,170 @@ export default function PostData({ post }: { post: IPost }) {
         vote({ postId, action });
     };
 
-    if (userLoading) return <Loading />;
-
     return (
-        <div className="max-w-3xl mx-auto p-4">
-            <Card>
-                <CardHeader className="flex flex-col items-start">
-                    <h1 className="text-3xl font-bold mb-2">{post?.title}</h1>
-                    <div className="flex items-center space-x-4 mb-4">
-                        <Avatar
-                            src={post?.author?.profileImage}
-                            alt={post?.author?.name}
-                            fallback
-                        />
-                        <div>
-                            <p className="text-sm font-medium">
-                                {post?.author?.name}
-                            </p>
-                            <div className="flex items-center text-xs text-muted-foreground">
-                                <CalendarIcon className="mr-1 h-3 w-3" />
-                                <time dateTime={post?.createdAt}>
-                                    {moment(post?.createdAt).format("llll")}
-                                </time>
-                            </div>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardBody>
-                    <p className="mb-4">{post?.content}</p>
-                    <div className="flex items-center space-x-4">
-                        <Button
-                            variant="solid"
-                            size="sm"
-                            onClick={() => handleVotes(post?._id, "upvote")}
-                        >
-                            <ThumbsUp className="mr-2 h-4 w-4" />
-                            {post?.upVotes}
-                        </Button>
-                        <Button
-                            variant="solid"
-                            size="sm"
-                            onClick={() => handleVotes(post?._id, "downvote")}
-                        >
-                            <ThumbsDown className="mr-2 h-4 w-4" />
-                            {post?.downVotes}
-                        </Button>
-                    </div>
-                </CardBody>
-            </Card>
-
-            <Card className="mt-8">
-                <CardHeader>
-                    <h2 className="text-2xl font-bold">Comments</h2>
-                </CardHeader>
-                <CardBody>
-                    {post?.comments?.map((comment: IComment) => (
-                        <div
-                            key={comment._id}
-                            className="mb-4 pb-4 border-b last:border-b-0"
-                        >
-                            <div className="flex items-center space-x-2 mb-2">
-                                <Avatar
-                                    src={comment?.user?.profileImage}
-                                    alt={comment?.user?.name}
-                                    fallback
-                                />
-                                <div>
-                                    <p className="text-sm font-medium">
-                                        {comment?.user?.name}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground">
-                                        {moment(comment?.createdAt).format(
-                                            "llll"
-                                        )}
-                                    </p>
+        <>
+            {userLoading && <Loading />}
+            <div className="max-w-3xl mx-auto p-4">
+                <Card>
+                    <CardHeader className="flex flex-col items-start">
+                        <h1 className="text-3xl font-bold mb-2">
+                            {post?.title}
+                        </h1>
+                        <div className="flex items-center space-x-4 mb-4">
+                            <Avatar
+                                src={post?.author?.profileImage}
+                                alt={post?.author?.name}
+                                fallback
+                            />
+                            <div>
+                                <p className="text-sm font-medium">
+                                    {post?.author?.name}
+                                </p>
+                                <div className="flex items-center text-xs text-muted-foreground">
+                                    <CalendarIcon className="mr-1 h-3 w-3" />
+                                    <time dateTime={post?.createdAt}>
+                                        {moment(post?.createdAt).format("llll")}
+                                    </time>
                                 </div>
                             </div>
-                            {editingCommentId === comment._id ? (
-                                <textarea
-                                    className="w-full border border-gray-300 rounded-md p-2"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                />
-                            ) : (
-                                <p>{comment?.content}</p>
-                            )}
-                            {user?._id === comment?.user?._id && (
-                                <div className="flex items-center text-sm space-x-2 mt-3">
-                                    {editingCommentId === comment._id ? (
-                                        <>
+                        </div>
+                    </CardHeader>
+                    <CardBody>
+                        <p className="mb-4">{post?.content}</p>
+                        <div className="flex items-center space-x-4">
+                            <Button
+                                variant="solid"
+                                size="sm"
+                                onClick={() => handleVotes(post?._id, "upvote")}
+                            >
+                                <ThumbsUp className="mr-2 h-4 w-4" />
+                                {post?.upVotes}
+                            </Button>
+                            <Button
+                                variant="solid"
+                                size="sm"
+                                onClick={() =>
+                                    handleVotes(post?._id, "downvote")
+                                }
+                            >
+                                <ThumbsDown className="mr-2 h-4 w-4" />
+                                {post?.downVotes}
+                            </Button>
+                        </div>
+                    </CardBody>
+                </Card>
+
+                <Card className="mt-8">
+                    <CardHeader>
+                        <h2 className="text-2xl font-bold">Comments</h2>
+                    </CardHeader>
+                    <CardBody>
+                        {post?.comments?.map((comment: IComment) => (
+                            <div
+                                key={comment._id}
+                                className="mb-4 pb-4 border-b last:border-b-0"
+                            >
+                                <div className="flex items-center space-x-2 mb-2">
+                                    <Avatar
+                                        src={comment?.user?.profileImage}
+                                        alt={comment?.user?.name}
+                                        fallback
+                                    />
+                                    <div>
+                                        <p className="text-sm font-medium">
+                                            {comment?.user?.name}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {moment(comment?.createdAt).format(
+                                                "llll"
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                                {editingCommentId === comment._id ? (
+                                    <textarea
+                                        className="w-full border border-gray-300 rounded-md p-2"
+                                        value={content}
+                                        onChange={(e) =>
+                                            setContent(e.target.value)
+                                        }
+                                    />
+                                ) : (
+                                    <p>{comment?.content}</p>
+                                )}
+                                {user && user?._id === comment?.user?._id && (
+                                    <div className="flex items-center text-sm space-x-2 mt-3">
+                                        {editingCommentId === comment._id ? (
+                                            <>
+                                                <Button
+                                                    className="rounded"
+                                                    onClick={() =>
+                                                        handleSaveClick(
+                                                            comment._id
+                                                        )
+                                                    }
+                                                >
+                                                    Save
+                                                </Button>
+                                                <Button
+                                                    className="rounded"
+                                                    onClick={() =>
+                                                        handleCancel()
+                                                    }
+                                                >
+                                                    Cancel
+                                                </Button>
+                                            </>
+                                        ) : (
                                             <Button
                                                 className="rounded"
                                                 onClick={() =>
-                                                    handleSaveClick(comment._id)
+                                                    handleEdit(
+                                                        comment._id,
+                                                        comment?.content
+                                                    )
                                                 }
                                             >
-                                                Save
+                                                Edit
                                             </Button>
-                                            <Button
-                                                className="rounded"
-                                                onClick={() => handleCancel()}
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </>
-                                    ) : (
+                                        )}
                                         <Button
                                             className="rounded"
                                             onClick={() =>
-                                                handleEdit(
-                                                    comment._id,
-                                                    comment?.content
-                                                )
+                                                handleDelete(comment?._id)
                                             }
                                         >
-                                            Edit
+                                            Delete
                                         </Button>
-                                    )}
-                                    <Button
-                                        className="rounded"
-                                        onClick={() =>
-                                            handleDelete(comment?._id)
-                                        }
-                                    >
-                                        Delete
-                                    </Button>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-                </CardBody>
-                <CardFooter className="w-full">
-                    <TWForm onSubmit={handleSubmitComment}>
-                        <TWTextarea label="" name="content" />
-                        <Button
-                            type="submit"
-                            className="mt-3 rounded"
-                            isDisabled={isPending && !isSuccess}
-                        >
-                            {isPending ? (
-                                <>
-                                    <MessageSquare className="mr-2 h-4 w-4 animate-spin" />
-                                    Posting...
-                                </>
-                            ) : (
-                                <>
-                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                    Post Comment
-                                </>
-                            )}
-                        </Button>
-                    </TWForm>
-                </CardFooter>
-            </Card>
-        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </CardBody>
+                    <CardFooter className="w-full">
+                        <TWForm onSubmit={handleSubmitComment}>
+                            <TWTextarea label="" name="content" />
+                            <Button
+                                type="submit"
+                                className="mt-3 rounded"
+                                isDisabled={!user || (isPending && !isSuccess)}
+                            >
+                                {isPending ? (
+                                    <>
+                                        <MessageSquare className="mr-2 h-4 w-4 animate-spin" />
+                                        Posting...
+                                    </>
+                                ) : (
+                                    <>
+                                        <MessageSquare className="mr-2 h-4 w-4" />
+                                        Post Comment
+                                    </>
+                                )}
+                            </Button>
+                        </TWForm>
+                    </CardFooter>
+                </Card>
+            </div>
+        </>
     );
 }

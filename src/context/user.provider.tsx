@@ -9,6 +9,7 @@ import {
 } from "react";
 import { IUser } from "../types";
 import { getCurrentUser } from "../services/AuthService";
+import Loading from "../components/Loading";
 
 interface IUserProviderValues {
     user: IUser | null;
@@ -24,9 +25,12 @@ const UserProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const handleUser = async () => {
-        const currentUser = await getCurrentUser();
-        setUser(currentUser);
-        setIsLoading(false);
+        try {
+            const currentUser = await getCurrentUser();
+            setUser(currentUser);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     useEffect(() => {
