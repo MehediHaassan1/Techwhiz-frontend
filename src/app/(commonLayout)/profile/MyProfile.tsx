@@ -19,6 +19,8 @@ import Link from "next/link";
 export default function MyProfile() {
     const { user, isLoading: userLoading } = useUser();
 
+    if (!user) return null;
+
     return (
         <>
             {userLoading && <Loading />}
@@ -96,13 +98,13 @@ export default function MyProfile() {
                 {/* Followers and Following */}
                 <div className="flex gap-4 mb-8">
                     <div className="text-center">
-                        {user!.followers?.length > 0 ? (
+                        {user?.followers?.length > 0 ? (
                             <TWModal
                                 scrollBehavior="inside"
                                 title="Followers"
-                                btnText={`${user!.followers?.length} Followers`}
+                                btnText={`${user?.followers?.length} Followers`}
                             >
-                                {user!.followers?.map((user) => (
+                                {user?.followers?.map((user) => (
                                     <div key={user?._id}>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">

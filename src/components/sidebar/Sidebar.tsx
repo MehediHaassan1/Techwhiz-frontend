@@ -35,12 +35,12 @@ const Sidebar = () => {
 
     return (
         <div className="h-full relative">
-            <div className="bg-black w-full text-gray-300 flex justify-between z-50 md:hidden">
+            <div className="bg-black w-full text-gray-300 flex justify-between z-50 lg:hidden">
                 <div className="p-4 font-bold flex items-center gap-2">
                     <Logo /> <span className="text-2xl">TechWhiz</span>
                 </div>
                 <button
-                    className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-200"
+                    className="p-4 focus:outline-none focus:bg-gray-200"
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                 >
                     <Menu className="size-8" />

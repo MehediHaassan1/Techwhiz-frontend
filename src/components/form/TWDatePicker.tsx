@@ -30,7 +30,7 @@ const TWDatePicker = ({
                     label={label}
                     {...fields}
                     errorMessage={
-                        errors[name] ? (errors[name].message as string) : ""
+                        errors[name] ? (errors[name]?.message as string) : ""
                     }
                     isInvalid={!!errors[name]}
                     radius={radius}

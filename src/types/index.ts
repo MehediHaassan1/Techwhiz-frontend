@@ -33,6 +33,7 @@ export interface IUser {
   createdAt: string
   updatedAt: string
   __v: number
+  status: "active" | "block"
   passwordChangedAt: string
 }
 

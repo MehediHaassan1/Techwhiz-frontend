@@ -3,8 +3,8 @@ import Sidebar from "@/src/components/sidebar/Sidebar";
 const AdminDashBoardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="min-h-screen">
-            <div className=" flex flex-col md:flex-row h-full">
-                <div className="h-full md:sticky md:top-0">
+            <div className=" flex flex-col lg:flex-row h-full">
+                <div className="h-full md:sticky md:top-0 z-50">
                     <Sidebar />
                 </div>
 

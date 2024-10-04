@@ -6,12 +6,16 @@ import { toast } from "sonner"
 export const useUserRegister = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["register"],
-    mutationFn: async (registerData) => await userRegister(registerData),
+    mutationFn: async (registerData) => {
+      console.log(registerData, "from hook");
+      return await userRegister(registerData)
+    },
     onSuccess: () => {
       toast.success('Registration successful!');
     },
-    onError: () => {
-      toast.error('Registration failed!');
+    onError: (error) => {
+      const errorMessage = error?.message || "Registration failed!";
+      toast.error(errorMessage);
     },
   })
 }
@@ -23,8 +27,9 @@ export const useUserLogin = () => {
     onSuccess: () => {
       toast.success('Login successfully!')
     },
-    onError: () => {
-      toast.error('Invalid credentials!');
+    onError: (error) => {
+      const errorMessage = error?.message || "Login failed!";
+      toast.error(errorMessage);
     }
   })
 }

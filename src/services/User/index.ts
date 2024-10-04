@@ -1,17 +1,18 @@
 "use server"
 
-import envConfig from "@/src/config/envConfig";
 import axiosInstance from "@/src/lib/AxiosInstance";
 import { revalidateTag } from "next/cache";
 
-export const getAllUsers = async () => {
-  const fetchOptions = {
-    next: {
-      tags: ["users"]
+export const getAllUsersFromDB = async () => {
+  try {
+    const { data } = await axiosInstance.get(`/users`)
+    if (data?.success) {
+      return data;
     }
+  } catch (error: any) {
+    const errorMessage = error?.response?.data?.message;
+    throw new Error(errorMessage);
   }
-  const res = await fetch(`${envConfig.baseApi}/users`, fetchOptions)
-  return res.json();
 }
 
 export const toggleFollow = async (followingId: string) => {
@@ -22,6 +23,35 @@ export const toggleFollow = async (followingId: string) => {
       return null;
     }
   } catch (error: any) {
-    throw new Error(error.message);
+    const errorMessage = error?.response?.data?.message;
+    throw new Error(errorMessage);
+  }
+}
+
+export const toggleStatus = async (userId: string, action: 'block' | 'unblock') => {
+  try {
+    const { data } = await axiosInstance.patch(
+      `/users/${userId}/status`,
+      null,
+      { params: { action } }
+    )
+    if (data.success) {
+      return null;
+    }
+  } catch (error: any) {
+    const errorMessage = error?.response?.data?.message;
+    throw new Error(errorMessage);
+  }
+}
+
+export const deleteUser = async (userId: string) => {
+  try {
+    const { data } = await axiosInstance.delete(`/users/${userId}`)
+    if (data.success) {
+      return null;
+    }
+  } catch (error: any) {
+    const errorMessage = error?.response?.data?.message;
+    throw new Error(errorMessage);
   }
 }

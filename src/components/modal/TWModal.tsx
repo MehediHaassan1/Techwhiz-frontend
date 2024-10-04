@@ -12,7 +12,7 @@ import {
 import { ReactNode } from "react";
 
 interface IProps {
-    title: string;
+    title?: string;
     children: ReactNode;
     size?:
         | "xs"
@@ -27,7 +27,19 @@ interface IProps {
         | "full";
     scrollBehavior?: "inside" | "outside";
     btnIcon?: ReactNode;
-    btnText: string;
+    btnText?: string | ReactNode;
+    isIconBtn?: boolean;
+    btnSize?: "sm" | "md" | "lg" | undefined;
+    btnStyle?: string;
+    btnVariant?:
+        | "solid"
+        | "bordered"
+        | "light"
+        | "flat"
+        | "faded"
+        | "shadow"
+        | "ghost"
+        | undefined;
 }
 
 const TWModal = ({
@@ -37,11 +49,21 @@ const TWModal = ({
     scrollBehavior,
     btnIcon,
     btnText,
+    btnSize = undefined,
+    btnStyle,
+    btnVariant,
+    isIconBtn,
 }: IProps) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     return (
         <>
-            <Button onPress={onOpen} startContent={btnIcon} className="rounded">
+            <Button
+                size={btnSize}
+                onPress={onOpen}
+                startContent={btnIcon}
+                className={`rounded ${btnStyle}`}
+                variant={btnVariant}
+            >
                 {btnText}
             </Button>
             <Modal

@@ -7,11 +7,13 @@ import { FieldValues } from "react-hook-form";
 export const userRegister = async (registerData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post('/auth/register', registerData);
+    console.log(data, 'from service data')
     if (data.success) {
       return data;
     }
   } catch (error: any) {
-    throw new Error(error);
+    const errorMessage = error?.response?.data?.message || "Registration failed!";
+    throw new Error(errorMessage);
   }
 }
 
@@ -24,7 +26,8 @@ export const userLogin = async (loginData: FieldValues) => {
     }
     return data;
   } catch (error: any) {
-    throw new Error(error);
+    const errorMessage = error?.response?.data?.message || "Login failed!";
+    throw new Error(errorMessage);
   }
 }
 
@@ -61,7 +64,8 @@ export const getNewAccessToken = async () => {
     });
 
     return res.data;
-  } catch (error) {
-    throw new Error("Failed to get new access token");
+  } catch (error: any) {
+    const errorMessage = error?.response?.data?.message || "Failed to get new access token";
+    throw new Error(errorMessage);
   }
 };

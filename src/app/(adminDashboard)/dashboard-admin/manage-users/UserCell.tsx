@@ -1,9 +1,17 @@
 "use client";
 
-import React from "react";
-import { EyeIcon, EditIcon, Trash2 } from "lucide-react";
+import React, { useState } from "react";
+import {
+    EyeIcon,
+    EditIcon,
+    Trash2,
+    ShieldCheck,
+    ShieldBan,
+} from "lucide-react";
 import { User } from "@nextui-org/user";
 import { Tooltip } from "@nextui-org/react";
+import UserProfile from "./UserProfile";
+import { useDeleteUser, useToggleStatus } from "@/src/hooks/user.hook";
 
 interface UserCellProps {
     user: any;
@@ -11,7 +19,18 @@ interface UserCellProps {
 }
 
 const UserCell: React.FC<UserCellProps> = ({ user, columnKey }) => {
+    const { mutate: toggleStatus } = useToggleStatus();
+    const { mutate: deleteUser } = useDeleteUser();
+    const [profileCollapse, setProfileCollapse] = useState(false);
     const cellValue = user[columnKey];
+
+    const handleStatus = (id: string, action: "block" | "unblock") => {
+        toggleStatus({ userId: id, action });
+    };
+
+    const handleUserDelete = (id: string) => {
+        deleteUser(id);
+    };
 
     switch (columnKey) {
         case "name":
@@ -41,22 +60,60 @@ const UserCell: React.FC<UserCellProps> = ({ user, columnKey }) => {
         case "actions":
             return (
                 <div className="relative flex items-center justify-center gap-3">
+                    {/* View Profile Tooltip */}
                     <Tooltip content="Details">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                            <EyeIcon />
+                        <span className="z-1 text-lg text-default-400 cursor-pointer active:opacity-50">
+                            <EyeIcon onClick={() => setProfileCollapse(true)} />
                         </span>
                     </Tooltip>
-                    <Tooltip content="Edit user">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                            <EditIcon />
-                        </span>
-                    </Tooltip>
-                    <Tooltip color="danger" content="Delete user">
+
+                    {profileCollapse && (
+                        <UserProfile
+                            user={user}
+                            profileCollapse={profileCollapse}
+                            setProfileCollapse={setProfileCollapse}
+                        />
+                    )}
+
+                    <Tooltip
+                        content={
+                            user?.status === "active"
+                                ? "Active profile"
+                                : "Blocked Profile"
+                        }
+                    >
                         <span
-                            onClick={() => console.log(user?._id)}
-                            className="text-lg text-danger cursor-pointer active:opacity-50"
+                            className="z-1 text-lg text-danger cursor-pointer active:opacity-50"
+                            aria-label={
+                                user?.status === "active"
+                                    ? "Deactivate user profile"
+                                    : "Activate user profile"
+                            }
                         >
-                            <Trash2 />
+                            {user?.status === "active" ? (
+                                <ShieldCheck
+                                    className="text-green-400"
+                                    onClick={() =>
+                                        handleStatus(user?._id, "block")
+                                    }
+                                />
+                            ) : (
+                                <ShieldBan
+                                    className="text-yellow-400"
+                                    onClick={() =>
+                                        handleStatus(user?._id, "unblock")
+                                    }
+                                />
+                            )}
+                        </span>
+                    </Tooltip>
+
+                    {/* Delete User Tooltip */}
+                    <Tooltip color="danger" content="Delete user">
+                        <span className="z-1 text-lg text-danger cursor-pointer active:opacity-50">
+                            <Trash2
+                                onClick={() => handleUserDelete(user?._id)}
+                            />
                         </span>
                     </Tooltip>
                 </div>

@@ -1,7 +1,12 @@
 import { Navbar } from "@/src/components/navbar";
 import { ReactNode } from "react";
 
-const CommonLayout = ({ children }: { children: ReactNode }) => {
+interface IProps {
+    children: ReactNode;
+    components: ReactNode;
+}
+
+const layout = ({ children }: IProps) => {
     return (
         <div>
             <Navbar />
@@ -10,4 +15,4 @@ const CommonLayout = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export default CommonLayout;
+export default layout;
