@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
     Avatar,
     Button,
@@ -15,10 +15,10 @@ import { useUser } from "@/src/context/user.provider";
 import Loading from "@/src/components/Loading";
 import TWModal from "@/src/components/modal/TWModal";
 import Link from "next/link";
+import ProfileUpdateModal from "./ProfileUpdateModal";
 
 export default function MyProfile() {
-    const { user, isLoading: userLoading } = useUser();
-
+    const { user, isLoading: userLoading, setIsLoading } = useUser();
     if (!user) return null;
 
     return (
@@ -91,7 +91,19 @@ export default function MyProfile() {
                                 Verify
                             </Button>
                         )}
-                        <Button className="rounded">Edit Profile</Button>
+                        <TWModal
+                            title="Update Profile"
+                            btnText="Edit Profile"
+                            size="2xl"
+                        >
+                            {(closeModal) => (
+                                <ProfileUpdateModal
+                                    user={user}
+                                    setIsLoading={setIsLoading}
+                                    closeModal={closeModal}
+                                />
+                            )}
+                        </TWModal>
                     </div>
                 </div>
 
@@ -177,24 +189,17 @@ export default function MyProfile() {
                     <CardBody>
                         <div className="flex items-center gap-2 mb-4">
                             <InfoIcon size={20} />
-                            <h2 className="text-lg font-semibold">About</h2>
+                            <h2 className="text-lg font-semibold">Bio</h2>
                         </div>
-                        <p className="mb-4">
-                            Passionate web developer and tech blogger with 5+
-                            years of experience. I love creating user-friendly
-                            interfaces, solving complex problems, and sharing my
-                            knowledge through my blog. When I'm not coding or
-                            writing, you can find me exploring new coffee shops
-                            or hiking in nature.
-                        </p>
+                        <p className="mb-4">{user?.bio}</p>
                         <Divider className="my-4" />
                         <div className="flex items-center gap-2 mb-2">
                             <MapPinIcon size={20} />
-                            <p>123 Tech Street, Silicon Valley, CA 94000</p>
+                            <p>{user?.address || "N/A"}</p>
                         </div>
                         <div className="flex items-center gap-2">
                             <PhoneIcon size={20} />
-                            <p>(555) 123-4567</p>
+                            <p>(+88) {user?.phone}</p>
                         </div>
                     </CardBody>
                 </Card>

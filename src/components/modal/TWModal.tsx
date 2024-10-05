@@ -13,7 +13,7 @@ import { ReactNode } from "react";
 
 interface IProps {
     title?: string;
-    children: ReactNode;
+    children: ReactNode | ((closeModal: () => void) => ReactNode);
     size?:
         | "xs"
         | "sm"
@@ -52,9 +52,11 @@ const TWModal = ({
     btnSize = undefined,
     btnStyle,
     btnVariant,
-    isIconBtn,
 }: IProps) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const closeModal = () => {
+        onClose();
+    };
     return (
         <>
             <Button
@@ -78,7 +80,11 @@ const TWModal = ({
                             <ModalHeader className="flex flex-col gap-1">
                                 {title}
                             </ModalHeader>
-                            <ModalBody>{children}</ModalBody>
+                            <ModalBody>
+                                {typeof children === "function"
+                                    ? children(closeModal)
+                                    : children}
+                            </ModalBody>
                             {/* <ModalFooter>
                                 <Button
                                     color="danger"

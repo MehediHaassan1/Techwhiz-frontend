@@ -35,6 +35,8 @@ export interface IUser {
   __v: number
   status: "active" | "block"
   passwordChangedAt: string
+  address: string;
+  coverImage: string;
 }
 
 export interface IPost {

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteUser, getAllUsersFromDB, toggleFollow, toggleStatus, } from "../services/User"
+import { deleteUser, getAllUsersFromDB, toggleFollow, toggleStatus, updateProfile, } from "../services/User"
 import { toast } from "sonner"
 
 
@@ -56,6 +56,20 @@ export const useDeleteUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       toast.success("User deleted successfully!")
+    },
+    onError: (error) => {
+      toast.error(error?.message)
+    },
+  })
+}
+
+
+export const useUpdateProfile = () => {
+  return useMutation({
+    mutationKey: ["deleteUser"],
+    mutationFn: async (data: any) => await updateProfile(data),
+    onSuccess: () => {
+      toast.success("User updated successfully!")
     },
     onError: (error) => {
       toast.error(error?.message)
