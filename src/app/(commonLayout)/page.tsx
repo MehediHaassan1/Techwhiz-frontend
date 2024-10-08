@@ -1,6 +1,6 @@
 import { subtitle, title } from "@/src/components/primitives";
 
-import HomeBtn from "./@components/HomeBtn";
+import HomeBtn from "./_components/HomeBtn";
 
 export default function Home() {
   return (

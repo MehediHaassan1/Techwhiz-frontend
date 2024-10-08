@@ -1,7 +1,5 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
-
 import axiosInstance from "@/src/lib/AxiosInstance";
 
 export const getAllUsersFromDB = async () => {
@@ -24,9 +22,7 @@ export const toggleFollow = async (followingId: string) => {
       `/users/${followingId}/follow-toggle`,
     );
 
-    if (data.success) {
-      revalidateTag("post");
-
+    if (data?.success) {
       return null;
     }
   } catch (error: any) {

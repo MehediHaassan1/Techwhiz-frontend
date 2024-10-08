@@ -33,8 +33,10 @@ export default function MyProfile() {
           <Image
             alt="Cover Photo"
             className="w-full h-48 sm:h-64 object-cover rounded-xl"
-            src="https://images.unsplash.com/photo-1726231160459-308206afb13c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D"
-            width="100%"
+            src={
+              user?.coverImage ||
+              `"https://images.unsplash.com/photo-1726231160459-308206afb13c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxMnx8fGVufDB8fHx8fA%3D%3D" width="100%"`
+            }
           />
           {user?.isVerified ? (
             <div className="absolute -bottom-16 left-4">

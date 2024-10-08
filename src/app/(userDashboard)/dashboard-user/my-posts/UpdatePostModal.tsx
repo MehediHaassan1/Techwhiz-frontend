@@ -1,9 +1,11 @@
-import { FilePenLine } from "lucide-react";
+"use client";
 
-import PostModal from "./PostModal";
+import { FilePenLine } from "lucide-react";
 
 import TWModal from "@/src/components/modal/TWModal";
 import { IPost, IUser } from "@/src/types";
+
+import PostModal from "./PostModal";
 
 interface IProps {
   user: IUser;

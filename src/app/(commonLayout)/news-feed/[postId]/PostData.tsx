@@ -14,7 +14,7 @@ import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
-import { IComment, IPost } from "@/src/types";
+import { IComment, IPost, IUser } from "@/src/types";
 import TWForm from "@/src/components/form/TWForm";
 import TWTextarea from "@/src/components/form/TWTextArea";
 import {
@@ -23,12 +23,8 @@ import {
   usePostComment,
   useVotePost,
 } from "@/src/hooks/post.hook";
-import { useUser } from "@/src/context/user.provider";
-import Loading from "@/src/components/Loading";
 
-export default function PostData({ post }: { post: IPost }) {
-  const { user, isLoading: userLoading } = useUser();
-
+export default function PostData({ post, user }: { post: IPost; user: IUser }) {
   const { mutate: handlePostComment, isPending, isSuccess } = usePostComment();
   const { mutate: deleteComment } = useDeleteComment();
   const { mutate: editComment } = useEditComment();
@@ -81,7 +77,6 @@ export default function PostData({ post }: { post: IPost }) {
 
   return (
     <>
-      {userLoading && <Loading />}
       <div className="max-w-3xl mx-auto p-4">
         <Card>
           <CardHeader className="flex flex-col items-start">
@@ -111,16 +106,22 @@ export default function PostData({ post }: { post: IPost }) {
 
             <div className="flex items-center space-x-4">
               <Button
+                color={
+                  post?.upVotes?.includes(user?._id) ? "success" : undefined
+                }
                 size="sm"
-                variant="solid"
+                variant="bordered"
                 onClick={() => handleVotes(post?._id, "upvote")}
               >
                 <ThumbsUp className="mr-2 h-4 w-4" />
                 {post?.upVotes?.length}
               </Button>
               <Button
+                color={
+                  post?.downVotes?.includes(user?._id) ? "danger" : undefined
+                }
                 size="sm"
-                variant="solid"
+                variant="bordered"
                 onClick={() => handleVotes(post?._id, "downvote")}
               >
                 <ThumbsDown className="mr-2 h-4 w-4" />

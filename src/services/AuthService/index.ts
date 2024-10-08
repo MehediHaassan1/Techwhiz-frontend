@@ -14,10 +14,10 @@ export const userRegister = async (registerData: FieldValues) => {
       return data;
     }
   } catch (error: any) {
-    const errorMessage =
-      error?.response?.data?.message || "Registration failed!";
-
-    throw new Error(errorMessage);
+   return {
+    success:false, 
+    message: error?.response?.data?.message
+  }
   }
 };
 

@@ -47,9 +47,14 @@ export const useGetPost = (postId: string) => {
 };
 
 export const usePostComment = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["post-comment"],
     mutationFn: async ({ id, comment }) => await createComment(id, comment),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+    },
     onError: () => {
       toast.error("Failed to post comment!");
     },
@@ -57,6 +62,8 @@ export const usePostComment = () => {
 };
 
 export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["delete-comment"],
     mutationFn: async ({
@@ -66,6 +73,9 @@ export const useDeleteComment = () => {
       postId: string;
       commentId: string;
     }) => await deleteComment(postId, commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+    },
     onError: () => {
       toast.error("Failed to delete comment!");
     },
@@ -73,6 +83,8 @@ export const useDeleteComment = () => {
 };
 
 export const useEditComment = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["edit-comment"],
     mutationFn: async ({
@@ -84,6 +96,9 @@ export const useEditComment = () => {
       commentId: string;
       comment: { content: string };
     }) => await editComment(postId, commentId, comment),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+    },
     onError: () => {
       toast.error("Failed to edit comment!");
     },
@@ -91,9 +106,14 @@ export const useEditComment = () => {
 };
 
 export const useVotePost = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<any, Error, { postId: string; action: string }>({
     mutationKey: ["vote-post"],
     mutationFn: async ({ postId, action }) => await votePost(postId, action),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
+    },
     onError: (error) => {
       toast.error(error?.message);
     },

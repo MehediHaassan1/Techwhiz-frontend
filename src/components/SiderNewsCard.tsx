@@ -24,9 +24,11 @@ const SiderNewsCard = ({ post }: { post: IPost }) => {
           <div className="flex-1 space-y-2">
             <Link
               className="text-md font-bold leading-tight"
-              href={`/news-feed/${1}`}
+              href={`/news-feed/${post?._id}`}
             >
-              {post?.title}
+              {post?.title?.length > 40
+                ? post?.title?.slice(0, 40) + "..."
+                : post?.title}
             </Link>
             <div className="flex items-center space-x-5">
               <div className="flex items-center text-sm">

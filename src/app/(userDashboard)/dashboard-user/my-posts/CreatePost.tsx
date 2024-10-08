@@ -2,11 +2,11 @@
 
 import { CirclePlus } from "lucide-react";
 
-import PostModal from "./PostModal";
-
 import TWModal from "@/src/components/modal/TWModal";
 import { IUser } from "@/src/types";
 import { useUser } from "@/src/context/user.provider";
+
+import PostModal from "./PostModal";
 
 const CreatePost = () => {
   const { user } = useUser();

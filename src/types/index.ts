@@ -116,3 +116,18 @@ export interface IChangePassword {
   oldPassword: string;
   newPassword: string;
 }
+
+export type IMonthlyAnalytics = {
+  month: string;
+  totalFollowers: number;
+  totalFollowings: number;
+  totalPayments: number;
+  totalPosts: number;
+};
+
+export type IAggregatedTotals = {
+  totalFollowers: number;
+  totalFollowings: number;
+  totalPayments: number;
+  totalPosts: number;
+};

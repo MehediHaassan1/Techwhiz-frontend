@@ -177,8 +177,8 @@ const PostModal = ({ post, user, btn, closeModal }: IProps) => {
             name="description"
           />
         </div>
-        <div className="mb-3 flex items-center gap-3">
-          <div className="w-1/2">
+        <div className={`mb-3 gap-3 ${user ? "flex items-center" : ""}`}>
+          <div className={user ? "w-1/2" : "w-full flex-1"}>
             <TWSelect
               label={
                 <>
@@ -192,23 +192,25 @@ const PostModal = ({ post, user, btn, closeModal }: IProps) => {
             />
           </div>
           <div className="w-1/2">
-            <div className="">
-              <RadioGroup
-                isInvalid={isInvalid}
-                label={
-                  <>
-                    Post Status
-                    <sup className="ml-1 text-red-500">*</sup>
-                  </>
-                }
-                orientation="horizontal"
-                value={premium}
-                onValueChange={setPremium}
-              >
-                <Radio value="free">Free</Radio>
-                <Radio value="premium">Premium</Radio>
-              </RadioGroup>
-            </div>
+            {user?.isVerified && (
+              <div className="">
+                <RadioGroup
+                  isInvalid={isInvalid}
+                  label={
+                    <>
+                      Post Status
+                      <sup className="ml-1 text-red-500">*</sup>
+                    </>
+                  }
+                  orientation="horizontal"
+                  value={premium}
+                  onValueChange={setPremium}
+                >
+                  <Radio value="free">Free</Radio>
+                  <Radio value="premium">Premium</Radio>
+                </RadioGroup>
+              </div>
+            )}
           </div>
         </div>
         <div className="mb-3">

@@ -13,3 +13,15 @@ export const getAnalytics = async () => {
     throw new Error(error?.response?.data?.message);
   }
 };
+
+export const getUserAnalytics = async () => {
+  try {
+    const { data } = await axiosInstance.get("/analytics/user-analytics");
+
+    if (data?.success) {
+      return data;
+    }
+  } catch (error: any) {
+    throw new Error(error?.response?.data?.message);
+  }
+};

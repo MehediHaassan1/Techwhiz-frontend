@@ -7,6 +7,7 @@ import { Badge } from "@nextui-org/badge";
 import { CheckIcon } from "lucide-react";
 import { Image } from "@nextui-org/image";
 import Link from "next/link";
+import { Tooltip } from "@nextui-org/react";
 
 import { useToggleFollow } from "@/src/hooks/user.hook";
 import { useUser } from "@/src/context/user.provider";
@@ -95,7 +96,13 @@ export default function Author({
         {authorPosts?.map((post) => (
           <Card key={post?._id} as={Link} href={`/news-feed/${post?._id}`}>
             <CardHeader>
-              <h1 className="text-lg">{post?.title}</h1>
+              <Tooltip content={post?.title}>
+                <h1 className="text-lg">
+                  {post?.title.length > 20
+                    ? post?.title.slice(0, 40) + "..."
+                    : post?.title}
+                </h1>
+              </Tooltip>
             </CardHeader>
             <CardBody>
               <Image

@@ -26,7 +26,12 @@ export default function NewsCard({ post }: { post: IPost }) {
           />
 
           <div className="flex flex-col">
-            <p className="text-lg font-semibold">{post?.author?.name}</p>
+            <div className="flex items-center space-x-5">
+              <p className="text-lg font-semibold">{post?.author?.name}</p>
+              <Chip color={post?.isPremium ? "success" : "warning"} size="sm">
+                {post?.isPremium ? "Premium" : "Free"}
+              </Chip>
+            </div>
             <p className="text-sm text-gray-500">
               {moment(post?.createdAt).format("llll")} · 5 min read
             </p>

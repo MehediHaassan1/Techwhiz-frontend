@@ -17,10 +17,13 @@ export const useGetAllUsers = () => {
 };
 
 export const useToggleFollow = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["follower"],
     mutationFn: async (userId: string) => await toggleFollow(userId),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post"] });
       toast.success("Action successful!");
     },
     onError: (error) => {

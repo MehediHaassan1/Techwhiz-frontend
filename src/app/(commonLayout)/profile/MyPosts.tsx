@@ -46,7 +46,16 @@ export default function MyPosts() {
                 />
                 <div className="w-full md:w-2/3">
                   <h3 className="text-xl font-semibold mb-2">{post?.title}</h3>
-                  <p className="text-gray-600 mb-4">{post?.content}</p>
+                  {/* <p className="text-gray-600 mb-4">{post?.content}</p> */}
+
+                  <Link
+                    passHref
+                    className="flex items-center gap-2 hover:underline transition-all duration-300"
+                    href={`/news-feed/${post._id}`}
+                  >
+                    <BookOpenIcon size={18} />
+                    Read More
+                  </Link>
                   <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center gap-4">
                       <p className="flex items-center gap-2">
@@ -63,14 +72,6 @@ export default function MyPosts() {
                       </p>
                     </div>
                   </div>
-                  <Link
-                    passHref
-                    className="flex items-center gap-2 hover:underline transition-all duration-300"
-                    href={`/news-feed/${post._id}`}
-                  >
-                    <BookOpenIcon size={18} />
-                    Read More
-                  </Link>
                 </div>
               </div>
             </CardBody>
