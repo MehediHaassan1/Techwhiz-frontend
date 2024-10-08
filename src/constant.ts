@@ -3,5 +3,5 @@ export const protectedRoutes = [
   "/dashboard-admin",
   "/dashboard-user",
   "/login",
-  "/register"
+  "/register",
 ];

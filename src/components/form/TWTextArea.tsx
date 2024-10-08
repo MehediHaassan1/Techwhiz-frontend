@@ -4,28 +4,25 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { IInput } from "@/src/types";
 
 interface IProps extends IInput {
-    type?: string;
+  type?: string;
 }
 
 export default function TWTextarea({
-    name,
-    label,
-    variant = "bordered",
+  name,
+  label,
+  variant = "bordered",
 }: IProps) {
-    const {
-        register,
-        formState: { errors },
-    } = useFormContext();
+  const { register } = useFormContext();
 
-    const currentValue = useWatch({ name });
+  const currentValue = useWatch({ name });
 
-    return (
-        <Textarea
-            {...register(name)}
-            label={label}
-            minRows={6}
-            variant={variant}
-            value={currentValue || ""}
-        />
-    );
+  return (
+    <Textarea
+      {...register(name)}
+      label={label}
+      minRows={6}
+      value={currentValue || ""}
+      variant={variant}
+    />
+  );
 }

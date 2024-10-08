@@ -1,4 +1,4 @@
-import { ClipboardPlus, CreditCard, House, Key, Settings, Users } from "lucide-react";
+import { ClipboardPlus, CreditCard, House, Users } from "lucide-react";
 
 export const UserLinks = [
   { name: "Home", path: "/", icon: House },

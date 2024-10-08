@@ -8,29 +8,29 @@ import { IInput } from "@/src/types";
 interface IProps extends IInput {}
 
 export default function TWInput({
-    variant = "bordered",
-    size = "md",
-    required = false,
-    type = "text",
-    label,
-    name,
+  variant = "bordered",
+  size = "md",
+  required = false,
+  type = "text",
+  label,
+  name,
 }: IProps) {
-    const {
-        register,
-        formState: { errors },
-    } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
-    return (
-        <Input
-            {...register(name)}
-            errorMessage={errors[name] ? (errors[name]?.message as string) : ""}
-            isInvalid={!!errors[name]}
-            label={label}
-            required={required}
-            size={size}
-            type={type}
-            variant={variant}
-            radius="sm"
-        />
-    );
+  return (
+    <Input
+      {...register(name)}
+      errorMessage={errors[name] ? (errors[name]?.message as string) : ""}
+      isInvalid={!!errors[name]}
+      label={label}
+      radius="sm"
+      required={required}
+      size={size}
+      type={type}
+      variant={variant}
+    />
+  );
 }

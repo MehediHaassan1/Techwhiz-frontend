@@ -1,9 +1,11 @@
+import ManagePayment from "./ManagePayment";
+
 const PaymentHistoryPage = () => {
-    return (
-        <div>
-            <h1>This is PaymentHistoryPage component.</h1>
-        </div>
-    );
+  return (
+    <div>
+      <ManagePayment />
+    </div>
+  );
 };
 
 export default PaymentHistoryPage;

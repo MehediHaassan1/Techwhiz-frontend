@@ -1,9 +1,11 @@
+import ChangePassword from "./ChangePassword";
+
 const Settings = () => {
-    return (
-        <div>
-            <h1>This is Settings component.</h1>
-        </div>
-    );
+  return (
+    <div>
+      <ChangePassword />
+    </div>
+  );
 };
 
 export default Settings;

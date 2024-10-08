@@ -18,7 +18,6 @@ export const siteConfig = {
     },
   ],
   navMenuItems: [
-
     {
       label: "News Feed",
       href: "/news-feed",

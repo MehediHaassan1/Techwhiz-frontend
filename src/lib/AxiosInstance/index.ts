@@ -1,8 +1,8 @@
-import envConfig from "@/src/config/envConfig";
-import { getNewAccessToken } from "@/src/services/AuthService";
 import axios from "axios";
 import { cookies } from "next/headers";
 
+import envConfig from "@/src/config/envConfig";
+import { getNewAccessToken } from "@/src/services/AuthService";
 
 const axiosInstance = axios.create({
   baseURL: envConfig.baseApi,
@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use(
   },
   function (error) {
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosInstance.interceptors.response.use(
@@ -43,8 +43,7 @@ axiosInstance.interceptors.response.use(
     } else {
       return Promise.reject(error);
     }
-  }
+  },
 );
-
 
 export default axiosInstance;
