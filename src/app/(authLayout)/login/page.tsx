@@ -13,14 +13,24 @@ export default function LoginPage() {
           </CardHeader>
           <CardBody>
             <LoginForm />
-            <div className="mt-4 text-center">
-              Don&apos;t have an account?
-              <Link
-                className="text-blue-500 hover:underline ml-2"
-                href="/register"
-              >
-                Register here
-              </Link>
+            <div className="mt-4 flex items-center justify-between">
+              <p>
+                Don&apos;t have an account?
+                <Link
+                  className="text-blue-500 hover:underline ml-2"
+                  href="/register"
+                >
+                  Register here
+                </Link>
+              </p>
+              <p>
+                <Link
+                  className="text-green-500 hover:underline ml-2"
+                  href="/news-feed"
+                >
+                  News Feed
+                </Link>
+              </p>
             </div>
           </CardBody>
         </Card>

@@ -23,7 +23,6 @@ const LoginForm = () => {
   const redirect = searchParams.get("redirect");
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data, "Form");
     handleUserLogin(data);
     setIsLoading(true);
   };
@@ -53,7 +52,10 @@ const LoginForm = () => {
 
           <button
             className="absolute right-0 mr-2"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={(e) => {
+              e.preventDefault();
+              setShowPassword(!showPassword);
+            }}
           >
             {showPassword ? (
               <EyeOff className=" size-6" />
@@ -63,7 +65,13 @@ const LoginForm = () => {
           </button>
         </div>
 
-        <Button fullWidth className="rounded" color="primary" type="submit">
+        <Button
+          fullWidth
+          className="rounded"
+          color="primary"
+          isLoading={isPending}
+          type="submit"
+        >
           Login
         </Button>
       </TWForm>

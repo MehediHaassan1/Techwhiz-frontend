@@ -29,10 +29,10 @@ export const useCreatePost = () => {
   });
 };
 
-export const useGetPosts = () => {
+export const useGetPosts = (category = "", search = "") => {
   return useQuery({
-    queryKey: ["posts"],
-    queryFn: async () => await getPosts(),
+    queryKey: ["posts", { category, search }],
+    queryFn: async () => await getPosts(category, search),
     staleTime: 1000 * 60 * 5,
   });
 };

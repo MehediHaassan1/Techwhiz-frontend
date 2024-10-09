@@ -28,7 +28,7 @@ const RegisterForm = () => {
     mutate: handleUserRegister,
     isPending,
     isSuccess,
-    data
+    data,
   } = useUserRegister();
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -151,7 +151,10 @@ const RegisterForm = () => {
 
             <button
               className="absolute right-0 mr-2"
-              onClick={() => setShowPassword(!showPassword)}
+              onClick={(e) => {
+                e.preventDefault();
+                setShowPassword(!showPassword);
+              }}
             >
               {showPassword ? (
                 <EyeOff className=" size-6" />

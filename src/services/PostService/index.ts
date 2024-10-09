@@ -19,9 +19,14 @@ export const createPost = async (postData: ICreatePost) => {
   }
 };
 
-export const getPosts = async () => {
+export const getPosts = async (category = "", search = "") => {
   try {
-    const { data } = await axiosInstance.get("/posts");
+    const { data } = await axiosInstance.get("/posts", {
+      params: {
+        category,
+        search,
+      },
+    });
 
     if (data?.success) {
       return { ...data, tags: ["posts"] };

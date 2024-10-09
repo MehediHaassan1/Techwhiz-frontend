@@ -16,14 +16,24 @@ export default function RegisterPage() {
               <sup className="text-red-500">*</sup> fields are required
             </div>
             <RegisterForm />
-            <div className="mt-4 text-center">
-              Already have an account?
-              <Link
-                className="text-blue-500 hover:underline ml-2"
-                href="/login"
-              >
-                Login here
-              </Link>
+            <div className="mt-4 flex items-center justify-between">
+              <p>
+                Already have an account?
+                <Link
+                  className="text-blue-500 hover:underline ml-2"
+                  href="/login"
+                >
+                  Login here
+                </Link>
+              </p>
+              <p>
+                <Link
+                  className="text-green-500 hover:underline ml-2"
+                  href="/news-feed"
+                >
+                  News Feed
+                </Link>
+              </p>
             </div>
           </CardBody>
         </Card>

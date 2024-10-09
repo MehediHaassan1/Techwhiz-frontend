@@ -14,7 +14,7 @@ import { IChangePassword } from "../types";
 export const useUserRegister = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["register"],
-    mutationFn: async (registerData) => await userRegister(registerData)
+    mutationFn: async (registerData) => await userRegister(registerData),
   });
 };
 
