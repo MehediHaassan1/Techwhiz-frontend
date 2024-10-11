@@ -93,6 +93,10 @@ npm run dev
 
 -   **Edit Personal Information:** Update personal details.
 
+### Payment History
+
+-   **Payment History:** User can see all the payment he has made by of his own.
+
 ### Responsive Design
 
 -   **Multi-Device Access:** Use the app on mobile, tablet, and desktop devices.
@@ -110,6 +114,10 @@ npm run dev
 ### Posts Management
 
 -   **Delete Posts:** Admin can delete posts.
+
+### Payment History
+
+-   **Payment History:** Admin can see the payment history of all users of monthly payment.
 
 ## Contacts
 
