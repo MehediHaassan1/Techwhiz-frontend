@@ -13,6 +13,7 @@ import moment from "moment";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
+import { Link } from "@nextui-org/link";
 
 import { IComment, IPost, IUser } from "@/src/types";
 import TWForm from "@/src/components/form/TWForm";
@@ -106,23 +107,37 @@ export default function PostData({ post, user }: { post: IPost; user: IUser }) {
 
             <div className="flex items-center space-x-4">
               <Button
+                as={Link}
                 color={
                   post?.upVotes?.includes(user?._id) ? "success" : undefined
                 }
+                href={user ? "" : `/login?redirect=news-feed/${post?._id}`}
                 size="sm"
                 variant="bordered"
-                onClick={() => handleVotes(post?._id, "upvote")}
+                onClick={(e) => {
+                  if (user) {
+                    e.preventDefault();
+                    handleVotes(post?._id, "upvote");
+                  }
+                }}
               >
                 <ThumbsUp className="mr-2 h-4 w-4" />
                 {post?.upVotes?.length}
               </Button>
               <Button
+                as={Link}
                 color={
                   post?.downVotes?.includes(user?._id) ? "danger" : undefined
                 }
+                href={user ? "" : `/login?redirect=news-feed/${post?._id}`}
                 size="sm"
                 variant="bordered"
-                onClick={() => handleVotes(post?._id, "downvote")}
+                onClick={(e) => {
+                  if (user) {
+                    e.preventDefault();
+                    handleVotes(post?._id, "downvote");
+                  }
+                }}
               >
                 <ThumbsDown className="mr-2 h-4 w-4" />
                 {post?.downVotes?.length}

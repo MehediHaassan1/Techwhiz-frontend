@@ -22,8 +22,6 @@ export const useUserLogin = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["login"],
     mutationFn: async (loginData) => {
-      console.log(loginData, "hook");
-
       return await userLogin(loginData);
     },
     onSuccess: () => {

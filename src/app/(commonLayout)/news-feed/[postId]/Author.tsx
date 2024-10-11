@@ -74,7 +74,7 @@ export default function Author({
         </div>
         <div className="flex flex-col space-y-2">
           {!user ? (
-            <Button passHref as={Link} className="rounded" href="/login">
+            <Button passHref as={Link} className="rounded" href={`/login`}>
               Follow
             </Button>
           ) : author?._id === user?._id ? (

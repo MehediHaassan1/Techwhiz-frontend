@@ -29,11 +29,34 @@ export const useCreatePost = () => {
   });
 };
 
-export const useGetPosts = (category = "", search = "") => {
+export const useGetPosts = (queryParams: {
+  category?: string;
+  search?: string;
+  isPopular?: boolean;
+  isRandom?: boolean;
+  page?: number;
+  limit?: number;
+}) => {
+  const {
+    category = "",
+    search = "",
+    isPopular = false,
+    isRandom = false,
+    page = 1,
+    limit = 5,
+  } = queryParams;
+
+  const queryKey = isPopular
+    ? ["popular-posts"]
+    : isRandom
+      ? ["random-posts"]
+      : ["posts", { category, search, page, limit }];
+
   return useQuery({
-    queryKey: ["posts", { category, search }],
-    queryFn: async () => await getPosts(category, search),
-    staleTime: 1000 * 60 * 5,
+    queryKey,
+    queryFn: async () => await getPosts(queryParams),
+    staleTime: isRandom ? 1000 * 60 * 60 * 24 : 1000 * 60 * 5,
+    refetchInterval: isRandom ? 1000 * 60 * 60 * 24 : 1000 * 30,
   });
 };
 
@@ -120,10 +143,10 @@ export const useVotePost = () => {
   });
 };
 
-export const useGetMyPosts = () => {
+export const useGetMyPosts = (queryParams: any) => {
   return useQuery({
-    queryKey: ["my-posts"],
-    queryFn: async () => await getMyPosts(),
+    queryKey: ["my-posts", queryParams],
+    queryFn: async () => await getMyPosts(queryParams),
   });
 };
 

@@ -4,15 +4,19 @@ import { Button } from "@nextui-org/button";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import TWForm from "@/src/components/form/TWForm";
 import TWInput from "@/src/components/form/TWInput";
 import changePasswordSchema from "@/src/schema/changePassword.schema";
 import { useChangePassword } from "@/src/hooks/auth.hook";
 import { userLogout } from "@/src/services/AuthService";
+import { useUser } from "@/src/context/user.provider";
 
 const ChangePassword = () => {
   const { mutate: changePassword, isPending, isSuccess } = useChangePassword();
+  const router = useRouter();
+  const { setUser, isLoading: userLoading } = useUser();
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const passwordInfo = {
       oldPassword: data?.oldPassword,
@@ -25,8 +29,10 @@ const ChangePassword = () => {
   useEffect(() => {
     if (isSuccess) {
       userLogout();
+      setUser(null);
+      router.push("/login?redirect=news-feed");
     }
-  }, [isSuccess]);
+  }, [isSuccess, router, userLoading]);
 
   return (
     <div>

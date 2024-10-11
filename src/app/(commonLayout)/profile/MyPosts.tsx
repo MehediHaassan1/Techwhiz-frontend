@@ -16,8 +16,8 @@ import { IPost } from "@/src/types";
 import { useGetMyPosts } from "@/src/hooks/post.hook";
 
 export default function MyPosts() {
-  const { data } = useGetMyPosts();
-  const posts = data?.data;
+  const { data } = useGetMyPosts({});
+  const posts = data?.posts;
 
   return (
     <div className="max-w-4xl mx-auto p-4">

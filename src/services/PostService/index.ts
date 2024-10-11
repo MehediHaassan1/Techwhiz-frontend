@@ -19,17 +19,42 @@ export const createPost = async (postData: ICreatePost) => {
   }
 };
 
-export const getPosts = async (category = "", search = "") => {
+export const getPosts = async ({
+  category = "",
+  search = "",
+  isPopular = false,
+  isRandom = false,
+  page = 1,
+  limit = 10,
+}: {
+  category?: string;
+  search?: string;
+  isPopular?: boolean;
+  isRandom?: boolean;
+  page?: number;
+  limit?: number;
+}) => {
   try {
     const { data } = await axiosInstance.get("/posts", {
       params: {
         category,
         search,
+        isPopular,
+        isRandom,
+        page,
+        limit,
       },
     });
 
     if (data?.success) {
-      return { ...data, tags: ["posts"] };
+      const tags = isPopular
+        ? ["popular-posts"]
+        : isRandom
+          ? ["random-posts"]
+          : ["posts"];
+      const posts = data?.data;
+
+      return { ...posts, tags };
     }
   } catch (error: any) {
     throw new Error(error?.response?.data?.message || "Error fetching posts");
@@ -120,18 +145,19 @@ export const votePost = async (postId: string, action: string) => {
   }
 };
 
-export const getMyPosts = async () => {
+export const getMyPosts = async (params: any) => {
   try {
-    const { data } = await axiosInstance.get("/posts/my-posts");
+    const { data } = await axiosInstance.get("/posts/my-posts", {
+      params,
+    });
 
     if (data?.success) {
-      return data;
+      return data?.data;
     }
   } catch (error: any) {
     throw new Error(error?.response?.data?.message);
   }
 };
-
 export const deletePost = async (postId: string) => {
   try {
     const { data } = await axiosInstance.delete(`/posts/${postId}`);

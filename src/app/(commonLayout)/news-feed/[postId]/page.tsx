@@ -8,8 +8,8 @@ import { useGetPost, useGetPosts } from "@/src/hooks/post.hook";
 import { IPost, IUser } from "@/src/types";
 import { useUser } from "@/src/context/user.provider";
 
-import Author from "./Author";
 import PostData from "./PostData";
+import Author from "./Author";
 
 interface IProps {
   params: {
@@ -18,7 +18,15 @@ interface IProps {
 }
 
 export default function PostDetails({ params: { postId } }: IProps) {
-  const { data: posts } = useGetPosts();
+  const normalPostsParams = {
+    category: "",
+    search: "",
+    isPopular: false,
+    isRandom: false,
+    page: 1,
+    limit: 10,
+  };
+  const { data: posts } = useGetPosts(normalPostsParams);
   const { data, isLoading } = useGetPost(postId);
   const { user } = useUser();
   const router = useRouter();

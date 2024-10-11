@@ -17,6 +17,7 @@ import uploadImageToCloudinary from "@/src/utils/uploadImageToCloudinary";
 import "react-quill/dist/quill.snow.css";
 import { useCreatePost, useUpdatePost } from "@/src/hooks/post.hook";
 import TWTextarea from "@/src/components/form/TWTextArea";
+import { postCategoryOptions } from "@/src/constant";
 
 interface IProps {
   post?: IPost;
@@ -284,13 +285,4 @@ const formats = [
   "indent",
   "link",
   "image",
-];
-
-const postCategoryOptions = [
-  { key: "Web", label: "Web" },
-  { key: "Software Engineering", label: "Software Engineering" },
-  { key: "AI", label: "AI" },
-  { key: "ML", label: "ML" },
-  { key: "VR", label: "VR" },
-  { key: "Others", label: "Others" },
 ];

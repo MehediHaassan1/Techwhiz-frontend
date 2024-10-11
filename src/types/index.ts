@@ -118,10 +118,10 @@ export interface IChangePassword {
 }
 
 export type IMonthlyAnalytics = {
+  totalAmount: number;
   month: string;
   totalFollowers: number;
   totalFollowings: number;
-  totalPayments: number;
   totalPosts: number;
 };
 

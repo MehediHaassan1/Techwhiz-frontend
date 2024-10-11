@@ -1,46 +1,43 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
+import { Input } from "@nextui-org/input";
 import {
+  Pagination,
+  Select,
+  SelectItem,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/table";
-import { Input } from "@nextui-org/input";
-import {
-  Button,
-  Pagination,
-  Select,
-  SelectItem,
-  Spinner,
 } from "@nextui-org/react";
-import { ChangeEvent, useCallback, useState } from "react";
 import { debounce } from "lodash";
+import { ChangeEvent, useCallback, useState } from "react";
 
-import { useGetMyPosts } from "@/src/hooks/post.hook";
 import { IPost } from "@/src/types";
+import { useGetPosts } from "@/src/hooks/post.hook";
 import { postCategoryOptions, postColumns } from "@/src/constant";
 
-import ManagePostCell from "./ManagePostCell";
+import AdminManagePostCell from "./AdminManagePostCell";
 
-const ManagePostsTable = () => {
+const AdminManagePostsTable = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(1);
 
   const queryParams = {
     search: search,
     category: category,
-    sortOrder: sortOrder,
+    isPopular: false,
+    isRandom: false,
     page: page,
-    limit: 2,
+    limit: 5,
   };
 
-  const { data, isLoading } = useGetMyPosts(queryParams);
+  const { data, isLoading } = useGetPosts(queryParams);
 
   const debouncedSearch = useCallback(
     debounce((value) => {
@@ -55,10 +52,6 @@ const ManagePostsTable = () => {
 
   const handleCategory = (e: ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
-  };
-
-  const toggleSortOrder = () => {
-    setSortOrder((prevOrder) => (prevOrder === "desc" ? "asc" : "desc"));
   };
 
   const totalPages = data?.meta?.totalPages || 1;
@@ -87,11 +80,6 @@ const ManagePostsTable = () => {
             </SelectItem>
           ))}
         </Select>
-
-        {/* Sort Button */}
-        <Button className="rounded" onPress={toggleSortOrder}>
-          Sort: {sortOrder === "desc" ? "Descending" : "Ascending"}
-        </Button>
       </div>
 
       {isLoading ? (
@@ -134,7 +122,7 @@ const ManagePostsTable = () => {
                   <TableRow key={post?._id} className="z-0">
                     {(columnKey) => (
                       <TableCell>
-                        <ManagePostCell
+                        <AdminManagePostCell
                           columnKey={columnKey as string}
                           post={post}
                         />
@@ -153,4 +141,4 @@ const ManagePostsTable = () => {
   );
 };
 
-export default ManagePostsTable;
+export default AdminManagePostsTable;

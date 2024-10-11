@@ -47,5 +47,6 @@ export const config = {
     "/dashboard-user/:page*",
     "/login",
     "/register",
+    "/settings",
   ],
 };

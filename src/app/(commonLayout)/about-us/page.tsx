@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Card, CardBody, Avatar, Button, Divider } from "@nextui-org/react";
 import {
@@ -172,10 +174,6 @@ export default function AboutUsPage() {
       </section>
 
       <Divider className="my-12" />
-
-      <footer className="text-center text-gray-600">
-        <p>© 2023 ThoughtCanvas. All rights reserved.</p>
-      </footer>
     </div>
   );
 }

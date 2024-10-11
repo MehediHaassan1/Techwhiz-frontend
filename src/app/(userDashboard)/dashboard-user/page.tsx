@@ -25,7 +25,7 @@ export default function Component() {
     (data) => ({
       month: data.month,
       totalPosts: data.totalPosts,
-      totalPayments: data.totalPayments,
+      totalAmount: data.totalAmount,
       totalFollowers: data.totalFollowers,
       totalFollowings: data.totalFollowings,
     }),
@@ -35,7 +35,7 @@ export default function Component() {
     (totals, monthData) => ({
       totalFollowers: totals.totalFollowers + monthData.totalFollowers,
       totalFollowings: totals.totalFollowings + monthData.totalFollowings,
-      totalPayments: totals.totalPayments + monthData.totalPayments,
+      totalPayments: totals.totalPayments + monthData.totalAmount,
       totalPosts: totals.totalPosts + monthData.totalPosts,
     }),
     {
@@ -76,7 +76,6 @@ export default function Component() {
 
             <XAxis dataKey="month" />
             <YAxis />
-            {/* <CartesianGrid strokeDasharray="3 3" /> */}
             <Tooltip />
             <Legend />
 
@@ -89,7 +88,7 @@ export default function Component() {
               type="monotone"
             />
             <Area
-              dataKey="totalPayments"
+              dataKey="totalAmount"
               fill="url(#colorLikes)"
               fillOpacity={1}
               stroke="#82ca9d"

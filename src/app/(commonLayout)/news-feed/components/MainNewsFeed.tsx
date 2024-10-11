@@ -9,16 +9,35 @@ import SiderNewsCard from "@/src/components/SiderNewsCard";
 import { useGetPosts } from "@/src/hooks/post.hook";
 import { IPost } from "@/src/types";
 import { SearchIcon } from "@/src/components/icons";
+import { postCategoryOptions } from "@/src/constant";
 
 const MainNewsFeed = () => {
   const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
-  const { data, isLoading } = useGetPosts(category, search);
+  const normalPostsParams = {
+    category: category,
+    search: search,
+    isPopular: false,
+    isRandom: false,
+    page: 1,
+    limit: 10,
+  };
+  const popularPostsParams = {
+    category: "",
+    search: "",
+    isPopular: true,
+    isRandom: false,
+    page: 1,
+    limit: 10,
+  };
+  const { data, isLoading: postLoading } = useGetPosts(normalPostsParams);
+  const { data: popularPosts, isLoading: popularPostsLoading } =
+    useGetPosts(popularPostsParams);
 
   const debouncedSearch = useCallback(
     debounce((value) => {
       setSearch(value);
-    }, 300),
+    }, 500),
     [],
   );
 
@@ -30,20 +49,14 @@ const MainNewsFeed = () => {
     debouncedSearch(e.target.value);
   };
 
-  const posts = data?.data as IPost[];
-
-  const mostLikedBlog = posts?.sort(
-    (a, b) => b?.upVotes?.length - a?.upVotes?.length,
-  );
-
   return (
     <div>
       <div className="grid md:grid-cols-3">
-        <div className="md:col-span-2 p-4 flex flex-col md:flex-row md:gap-2 sticky top-16">
+        <div className="z-20 md:col-span-2 p-4 flex flex-col md:flex-row md:gap-2 sticky top-16">
           <Select
             aria-label="select category"
             className="max-w-xs"
-            items={postCategories}
+            items={postCategoryOptions}
             placeholder="Select a category"
             size="md"
             onChange={handleCategoryChange}
@@ -66,18 +79,32 @@ const MainNewsFeed = () => {
         </div>
 
         <div className="md:col-span-2 space-y-5 p-4">
-          <div className="text-center">{isLoading && <Spinner />}</div>
-          {posts?.map((post: IPost) => <NewsCard key={post._id} post={post} />)}
+          <div className="text-center">{postLoading && <Spinner />}</div>
+          {data?.posts?.length > 0 ? (
+            data?.posts?.map((post: IPost) => (
+              <NewsCard key={post?._id} post={post} />
+            ))
+          ) : (
+            <div>
+              {!postLoading && (
+                <h1 className="text-3xl text-center">No Posts Available!</h1>
+              )}
+            </div>
+          )}
         </div>
         <div className="md:col-span-1 p-4 space-y-5 ">
           <div className="h-fit sticky top-16 ">
-            <h1>Popular Posts</h1>
+            <h1 className="text-3xl mb-4">Popular Posts</h1>
             <div className="grid grid-cols-2 md:grid-cols-1 gap-5">
-              {mostLikedBlog
-                ?.slice(0, 6)
-                ?.map((post: IPost) => (
-                  <SiderNewsCard key={post?._id} post={post} />
-                ))}
+              <div className="text-center">
+                {popularPostsLoading && <Spinner />}
+              </div>
+              {popularPosts?.posts?.length > 3 &&
+                popularPosts?.posts
+                  ?.slice(0, 6)
+                  ?.map((post: IPost) => (
+                    <SiderNewsCard key={post?._id} post={post} />
+                  ))}
             </div>
           </div>
         </div>
@@ -87,12 +114,3 @@ const MainNewsFeed = () => {
 };
 
 export default MainNewsFeed;
-
-export const postCategories = [
-  { key: "Web", label: "Web" },
-  { key: "Software Engineering", label: "Software Engineering" },
-  { key: "AI", label: "AI" },
-  { key: "ML", label: "ML" },
-  { key: "VR", label: "VR" },
-  { key: "Others", label: "Others" },
-];

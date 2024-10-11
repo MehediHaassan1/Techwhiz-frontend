@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   createPayment,
@@ -22,6 +22,8 @@ export const useGetMyPaymentHistory = () => {
 };
 
 export const useCreatePayment = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["create-payment"],
     mutationFn: async (paymentData: IPayment) =>
@@ -29,6 +31,9 @@ export const useCreatePayment = () => {
     onSuccess: (data) => {
       if (data?.success) {
         window.location.href = data?.data?.payment_url;
+        queryClient.invalidateQueries({
+          queryKey: ["user-analytics", "analytics"],
+        });
       }
     },
     onError(error: any) {
